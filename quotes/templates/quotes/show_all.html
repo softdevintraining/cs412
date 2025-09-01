@@ -1,0 +1,21 @@
+<!-- quotes/templates/quotes/show_all.html -->
+
+{% load static %}
+<html>
+    <head>
+        <title>Quote of the Day</title>
+    </head>
+    <body>
+        <h1>All quotes:</h1>
+        
+        {% for quote in all_quotes %}
+            <p>{{quote}}</p>
+        {% endfor %}
+                
+        <h1>All images:</h1>
+
+        {% for image in all_images %}
+            <img src="{% static image %}">
+        {% endfor %}
+    </body>
+</html>
