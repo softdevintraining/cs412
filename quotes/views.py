@@ -30,7 +30,7 @@ image_names = [
 
 # Create your views here.
 def main_page(request):
-    '''Respond to the URL '', delegate work to template'''
+    '''Respond to the URLs '' and '/quote', delegate work to template'''
 
     template_name = 'quotes/quote.html'
 
@@ -55,3 +55,14 @@ def show_all(request):
         "all_images": image_names,
     }
     return render(request, template_name, context)
+
+def about(request):
+    '''Respond to the URL 'about', delegate work to template'''
+
+    template_name = 'quotes/about.html'
+
+    context = {
+        "time": time.ctime(),
+    }
+    return render(request, template_name, context)
+

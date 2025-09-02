@@ -1,0 +1,23 @@
+<!-- quotes/templates/quotes/base.html -->
+
+{% load static %}
+<html>
+    <head>
+        <title>Muhammad Ali: Quote of the Day</title>
+    </head>
+    <body>
+        <h1>Muhammad Ali: Quote of the Day</h1>
+        <nav>
+            <li><a href="{% url 'main_page'%}">Quote of the Day</a></li>
+            <li><a href="{% url 'show_all' %}">All Quotes</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+        </nav>
+
+    {% block content %}
+    {% endblock %}
+    </body>
+    <footer>
+        The current time is {{time}}. <br>
+        This page was created by Oluwatimilehin Akibu (akilu@bu.edu).
+    </footer>
+</html>

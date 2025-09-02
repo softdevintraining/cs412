@@ -9,5 +9,6 @@ urlpatterns = [
     # path(r'', views.home, name="home")
     path(r'', views.main_page, name="main_page"),
     path(r'quote', views.main_page, name="main_page"),
-    path(r'show_all', views.show_all, name="show_all")
+    path(r'show_all', views.show_all, name="show_all"),
+    path(r'about', views.about, name="about"),
 ]

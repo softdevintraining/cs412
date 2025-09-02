@@ -1,13 +1,10 @@
 <!-- quotes/templates/quotes/quote.html -->
 
+{% extends 'quotes/base.html' %}
 {% load static %}
-<html>
-    <head>
-        <title>Quote of the Day</title>
-    </head>
-    <body>
-        <p>This is a site for the quote of the day.</p>
-        <p>{{quote}}</p>
-        <img src="{% static image %}">
-    </body>
-</html>
+
+{% block content %}
+    <!-- <p>This is a site for the quote of the day.</p> -->
+    <p>{{quote}}</p>
+    <img src="{% static image %}">
+{% endblock %}
