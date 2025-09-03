@@ -4,15 +4,15 @@
 {% load static %}
 
 {%block content%}
-    <h2>All quotes:</h2>
+    <h2>All Quotes</h2>
     
     {% for quote in all_quotes %}
         <p>{{quote}}</p>
     {% endfor %}
             
-    <h2>All images:</h2>
+    <h2>All Images</h2>
 
     {% for image in all_images %}
-        <img src="{% static image %}">
+        <img src="{% static image %}" style="max-width:70%; height:auto; display:block; margin: 0 auto;">
     {% endfor %}
 {% endblock %}

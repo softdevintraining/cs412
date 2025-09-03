@@ -6,5 +6,6 @@
 {% block content %}
     <!-- <p>This is a site for the quote of the day.</p> -->
     <p>{{quote}}</p>
-    <img src="{% static image %}">
+    <img src="{% static image %}" 
+    style="max-width:70%; height:auto; display:block; margin: 0 auto;">
 {% endblock %}
