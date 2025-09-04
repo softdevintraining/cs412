@@ -11,14 +11,30 @@ h1,h2,h3,h4,h5 {
 
 h1 {
     border-bottom: 2px solid black;
-    margin: auto;
 }
 
-a, a:visited {
+h2 {
+    margin: 0px 0px 10px 5px;
+}
+
+p {
+    margin: 10px 0px 10px 5px;
+}
+
+a {
     color: black;
     text-decoration: none;
     border: 2px solid black;
     border-radius: 5px 5px 0px 0px;
+    padding: 0px 2px;
+}
+
+a:visited {
+    color: grey;
+    text-decoration: none;
+    border: 2px solid black;
+    border-radius: 5px 5px 0px 0px;
+    padding: 0px 2px;
 }
 
 a:hover {
@@ -32,7 +48,8 @@ body {
     max-width: 960px;
     margin: auto;
     padding: 20px auto;
-    border: 1px solid black;
+    border-left: 3px solid black;
+    border-right: 3px solid black;
 }
 
 header {
@@ -51,12 +68,15 @@ footer {
     /*background:aliceblue;
     position: fixed;*/
     bottom: 0px;
-    margin: 20px 0px 0px 0px;
+    margin: 5px 0px 0px 5px;
 }
 
 img {
     border: 5px solid black;
-    margin: 10px;
+    max-width:70%; 
+    height:auto; 
+    display:block; 
+    margin: 5px auto;
 }
 
 .wrapper {              /* centering and margin around whole wrapper element */
