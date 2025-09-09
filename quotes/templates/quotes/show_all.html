@@ -1,4 +1,7 @@
-<!-- quotes/templates/quotes/show_all.html -->
+<!-- File: quotes/templates/quotes/show_all.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/9/2025 -->
+<!-- Description: HTML template that extends the base elements of the 
+ quote app and renders all quotes and images. -->
 
 {% extends 'quotes/base.html' %}
 {% load static %}
@@ -6,13 +9,13 @@
 {%block content%}
     <h2>All Quotes</h2>
     
-    {% for quote in all_quotes %}
-        <p>{{quote}}</p>
+    {% for quote in all_quotes %} <!-- Iterate through list of quotes -->
+        <p>{{quote}}</p> <!-- Render each quote -->
     {% endfor %}
             
     <h2>All Images</h2>
 
-    {% for image in all_images %}
-        <img src="{% static image %}">
+    {% for image in all_images %} <!-- Iterate through list of image names -->
+        <img src="{% static image %}"> <!-- Render each image -->
     {% endfor %}
 {% endblock %}

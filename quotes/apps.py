@@ -1,3 +1,6 @@
+# File: quotes/apps.py
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/9/2025
+
 from django.apps import AppConfig
 
 

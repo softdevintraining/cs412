@@ -1,10 +1,14 @@
+# File: quotes/views.py
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/9/2025
+# Description: The views file which handles responses to requests to quotes/
+
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
 import time
 import random
 
-ali_quotes = [
+ali_quotes = [ # List of quotes from my person of interest, Muhammad Ali
     "Float like a butterfly, sting like a bee.", 
     "I figured that if I said it enough, I would convince the world that I really was the greatest.",
     "Service to others is the rent you pay for your room here on Earth.",
@@ -12,7 +16,7 @@ ali_quotes = [
     "I’ve wrestled with alligators,  I’ve tussled with a whale. I done handcuffed lightning and thrown thunder in jail.  You know I’m bad. Just last week, I murdered a rock, injured a stone, hospitalized a brick. I’m so mean, I make medicine sick!"
 ]
 
-image_names = [
+image_names = [ # List of image files of my person of interest, Muhammad Ali
     'ali_dinner.jpg',
     'ali_knockdown.jpg',
     'ali_speech.jpg',
@@ -20,17 +24,9 @@ image_names = [
     'ali_weave.jpg',
 ]
 
-# formatted_ali_quotes = """
-#     Float like a butterfly, sting like a bee. \n
-#     I figured that if I said it enough, I would convince the world that I really was the greatest. \n
-#     Service to others is the rent you pay for your room here on Earth. \n
-#     Suffer now and live the rest of your life as a champion. \n
-#     I’ve wrestled with alligators,  I’ve tussled with a whale. I done handcuffed lightning and thrown thunder in jail.  You know I’m bad. Just last week, I murdered a rock, injured a stone, hospitalized a brick. I’m so mean, I make medicine sick! \n
-#     """
-
 # Create your views here.
 def main_page(request):
-    '''Respond to the URLs '' and '/quote', delegate work to template'''
+    '''Respond to the URLs: '' and '/quote', delegate work to template'''
 
     template_name = 'quotes/quote.html'
 
@@ -45,7 +41,7 @@ def main_page(request):
     return render(request, template_name, context)
 
 def show_all(request):
-    '''Respond to the URL 'show_all', delegate work to template'''
+    '''Respond to the URL: 'show_all', delegate work to template'''
 
     template_name = 'quotes/show_all.html'
 
@@ -57,7 +53,7 @@ def show_all(request):
     return render(request, template_name, context)
 
 def about(request):
-    '''Respond to the URL 'about', delegate work to template'''
+    '''Respond to the URL: 'about', delegate work to template'''
 
     template_name = 'quotes/about.html'
 
