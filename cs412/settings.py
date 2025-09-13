@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hw', # New app
+    'hw', # Example 1 app
+    'formdata', # Example 2 app
     'quotes', # Assignment 1 app
 ]
 
