@@ -1,0 +1,30 @@
+<!-- File: restaurant/templates/restaurant/order.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/13/2025 -->
+<!-- Description: HTML template that renders the order page of the restaurant
+  website -->
+
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Online Ordering</h2>
+
+    <h3>Available Foods:</h3>
+        <input type="checkbox"> Wings <br>
+        <input type="checkbox"> Chicken Sandwich <br>
+        <input type="checkbox"> Waffle Fries <br>
+        <input type="checkbox"> Texas Toast <br>
+        <input type="checkbox"> Special... <br>
+
+    <h3>Special Instructions: </h3>
+
+    <p>Write your special instructions here:</p>
+    <input type="text" name="special_instructions">
+
+    <h3>Customer Information: </h3>
+    <p>Name: <input type="text" name="user_name"></p>
+    <p>Phone: <input type="text" name="user_phone"></p>
+    <p>Email: <input type="text" name="user_email"></p>
+
+    <input type="submit" name="submits" value="Place Order">
+{% endblock %}

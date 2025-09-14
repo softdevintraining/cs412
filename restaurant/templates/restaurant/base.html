@@ -1,0 +1,25 @@
+<!-- File: restaurant/templates/restaurant/base.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/13/2025 -->
+<!-- Description: HTML template that renders the base elements of the 
+ restaurant website -->
+
+{% load static %}
+<html>
+    <head>
+        <title>Olu's Hot Chicken</title>
+    </head>
+    <body>
+        <h1>Olu's Hot Chicken!</h1>
+
+        <nav>
+            <li><a href="{% url 'main' %}">Main Page</a></li>
+            <li><a href="{% url 'order' %}">Order Online</a></li>
+        </nav>
+        {% block content %}
+        {% endblock %}
+    </body>
+    <footer>
+        The current time is {{time}}. <br>
+        This page was created by Oluwatimilehin Akibu (akilu@bu.edu).
+    </footer>
+</html>

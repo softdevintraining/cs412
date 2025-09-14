@@ -1,0 +1,22 @@
+<!-- File: restaurant/templates/restaurant/confirmation.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/13/2025 -->
+<!-- Description: HTML template that renders the confirmation page that shows
+ after submitting an order on the restaurant website -->
+
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Order Confirmation</h2>
+    
+    <p>Thank you for ordering, your order is confirmed!</p>
+
+    <h3>Order Details:</h3>
+    <p>Write your special instructions here:</p>
+    <input type="text" name="special_instructions">
+
+    <p>Your order will be ready...</p>
+
+
+    <h3>Customer Information: </h3>
+{% endblock %}
