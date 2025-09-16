@@ -9,14 +9,21 @@
 {% block content %}
     <h2>Order Confirmation</h2>
     
-    <p>Thank you for ordering, your order is confirmed!</p>
+    <p>Thank you for your order {{name}}, your order is confirmed!</p>
 
     <h3>Order Details:</h3>
-    <p>Write your special instructions here:</p>
-    <input type="text" name="special_instructions">
+    Items:
+    {% for item in items %}
+    <p>{{item}}</p>
+    {% endfor %}
 
-    <p>Your order will be ready...</p>
-
+    <p>Your order will be ready at: </p>
 
     <h3>Customer Information: </h3>
+    Name: {{name}} <br>
+    Phone: {{phone}} <br>
+    Email: {{email}}
+
+    <h4>Special Instructions: </h4>
+    {{special_instructions}} 
 {% endblock %}
