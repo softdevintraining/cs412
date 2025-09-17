@@ -10,16 +10,18 @@
     <h2>Online Ordering</h2>
 
     <form action="{% url 'confirmation' %}" method="POST">
-      <h3>Available Foods:</h3>
-        <input type="checkbox" name="items" value="Wings"> Wings <br>
-        <input type="checkbox" name="items" value="Chicken Sandwich"> Chicken Sandwich <br>
-        <input type="checkbox" name="items" value="Waffle Fries"> Waffle Fries <br>
-        <input type="checkbox" name="items" value="Texas Toast"> Texas Toast <br>
-        <input type="checkbox" name="items" value="Special"> Special... <br>
-
       {% csrf_token %}
-      <h3>Special Instructions: </h3>
+      <h3>Available Foods:</h3>
+        <input type="checkbox" name="items" value="8 Pc. Wings">8 Pc. Wings (
+          <input type="radio" name="wings_type" value="boneless">Boneless
+          <input type="radio" name="wings_type" value="traditional">Traditional) <br>
+        
+        <input type="checkbox" name="items" value="Chicken Sandwich">Chicken Sandwich<br>
+        <input type="checkbox" name="items" value="Waffle Fries">Waffle Fries<br>
+        <input type="checkbox" name="items" value="Texas Toast">Texas Toast<br>
+        <input type="checkbox" name="items" value="{{special}}">{{special}} (Daily Special!)<br>
 
+      <h3>Special Instructions: </h3>
       <p>Write your special instructions here:</p>
       <input type="text" name="special_instructions">
 
