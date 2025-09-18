@@ -12,21 +12,24 @@
     <p>Thank you for your order {{name}}, your order is confirmed!</p>
 
     <h3>Order Details:</h3>
-    Items:
     <p>
+    Items: <br>
     {% for item in items %}
     {{item}} <br>
     {% endfor %} <br>
     Price: {{price}}
     </p>
 
-    <p>Your order will be ready at: </p>
+    <p>Your order will be ready at: <strong>{{order_time}}</strong></p>
 
     <h3>Customer Information: </h3>
+
+    <p>
     Name: {{name}} <br>
     Phone: {{phone}} <br>
     Email: {{email}}
+    </p>
 
-    <h3>Special Instructions: </h3>
-    {{special_instructions}} 
+    <h3>Special Instructions:</h3>
+    <p>{{special_instructions}}</p>
 {% endblock %}

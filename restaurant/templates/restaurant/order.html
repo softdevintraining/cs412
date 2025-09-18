@@ -7,30 +7,35 @@
 {% load static %}
 
 {% block content %}
-    <h2>Online Ordering</h2>
+  <h2>Online Ordering</h2>
 
-    <form action="{% url 'confirmation' %}" method="POST">
-      {% csrf_token %}
-      <h3>Available Foods:</h3>
-        <input type="checkbox" name="items" value="8 Pc. Wings">8 Pc. Wings (
-          <input type="radio" name="wings_type" value="boneless">Boneless
-          <input type="radio" name="wings_type" value="traditional">Traditional) <br>
-        
-        <input type="checkbox" name="items" value="Chicken Sandwich">Chicken Sandwich<br>
-        <input type="checkbox" name="items" value="Waffle Fries">Waffle Fries<br>
-        <input type="checkbox" name="items" value="Texas Toast">Texas Toast<br>
-        <input type="checkbox" name="items" value="{{special}}">{{special}} (Daily Special!)<br>
+  <form action="{% url 'confirmation' %}" method="POST">
+    {% csrf_token %}
+    <h3>Standard Foods:</h3>
+    <p>
+      <input type="checkbox" name="items" value="8 Pc. Wings">8 Pc. Wings |
+        <input type="radio" name="wings_type" value="boneless">Boneless
+        <input type="radio" name="wings_type" value="traditional">
+        Traditional (Default)<br>
+      <input type="checkbox" name="items" value="Chicken Sandwich">
+      Chicken Sandwich<br>
+      <input type="checkbox" name="items" value="Waffle Fries">Waffle Fries<br>
+      <input type="checkbox" name="items" value="Texas Toast">Texas Toast<br>
+    </p>
 
-      <h3>Special Instructions: </h3>
-      <p>Write your special instructions here:</p>
-      <input type="text" name="special_instructions">
+    <h3>Extras:</h3>
+    <p><input type="checkbox" name="items" value="{{special}}">
+      {{special}} <strong>(Daily Special!)</strong></p>
 
-      <h3>Customer Information: </h3>
-      <p>Name: <input type="text" name="user_name"></p>
-      <p>Phone: <input type="text" name="user_phone"></p>
-      <p>Email: <input type="text" name="user_email"></p>
+    <h3>Special Instructions: </h3>
+    <p>Write your special instructions here:<br> 
+      <input type="text" name="special_instructions"></p>
+    
+    <h3>Customer Information: </h3>
+    <p>Name: <br> <input type="text" name="user_name"></p>
+    <p>Phone: <br> <input type="text" name="user_phone"></p>
+    <p>Email: <br> <input type="text" name="user_email"></p>
 
-      <input type="submit" name="submit" value="Place Order">
-
-    </form>
+    <input class="submit-btn" type="submit" name="submit" value="Place Order">
+  </form>
 {% endblock %}

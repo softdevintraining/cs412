@@ -1,5 +1,5 @@
 # File: restaurant/urls.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/13/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/19/2025
 # Description: File which pattern matches HTML responses to valid requests to 
 # restaurant/
 

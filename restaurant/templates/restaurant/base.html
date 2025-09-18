@@ -6,10 +6,12 @@
 {% load static %}
 <html>
     <head>
-        <title>Olu's Hot Chicken</title>
+        <title>Wings Over Boston</title> 
+        <!-- Apply css styling from restaurant-styles.css -->
+        <link rel="stylesheet" href="{% static 'restaurant-styles.css' %}">
     </head>
     <body>
-        <h1>Olu's Hot Chicken!</h1>
+        <h1>Wings Over Boston <img class="small-img" src="{% static 'wings_over.png' %}"> </h1>
 
         <nav>
             <li><a href="{% url 'main' %}">Main Page</a></li>
