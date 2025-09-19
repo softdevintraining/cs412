@@ -105,7 +105,8 @@ def confirmation(request):
     struct = time.localtime(timestamp)
     current_day = struct.tm_wday
     current_month = struct.tm_mon
-    string = time.strftime(f"{days_of_week[current_day]} {months[current_month]} %d %H:%M:%S %Y", struct)
+    string = time.strftime(
+        f"{days_of_week[current_day]} {months[current_month]} %d %H:%M:%S %Y", struct)
 
     # add variables to context
     context = {
@@ -116,7 +117,8 @@ def confirmation(request):
         'email': email,
         'price': price,
         'order_time': string,
-        'special_instructions': special_instructions or "No instructions provided.",
+        'special_instructions': special_instructions or 
+            "No instructions provided.",
     }
 
     return render(request, template_name, context)
