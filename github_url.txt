@@ -1,1 +1,1 @@
-https://github.com/spark-classes/hw0-assessment-softdevintraining
+https://github.com/softdevintraining/cs412
