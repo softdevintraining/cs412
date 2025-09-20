@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hw', # Example 1 app
     'formdata', # Example 2 app
+    'blog', # Example 3 app
     'quotes', # Assignment 1 app
     'restaurant', # Assignment 2 app
 ]
