@@ -1,0 +1,17 @@
+<!-- mini_insta/base.html -->
+{% load static %}
+
+<html>
+    <head>
+        <title>Mini Insta</title>
+        <link rel="stylesheet" href="{% static 'styles-blog.css' %}">
+    </head>
+    <body>
+        <head>
+            <h1>Profiles:</h1>
+        </head>
+        <!-- substitute specific content here -->
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
