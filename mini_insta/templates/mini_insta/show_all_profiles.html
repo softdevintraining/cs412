@@ -10,14 +10,15 @@
 <main class="grid-container">
     <!-- scriplet code for a for loop, CHANGE THIS -->
     {% for profile in profiles %}
-    <profile>
-        <div>
+    <div style="position: relative; text-align: center; display: block;">
+        <div style="position: relative;">
             <h2>{{profile.username}}</h2>
             <h3>by {{profile.display_name}}</h3>
-            <img src="{{profile.profile_image_url}}">
         </div>
-    </profile>
-    <hr>
+        <a href="{% url 'show_profile' profile.pk %}">
+        <img style="width: 100px; height: 100px; border: 1px solid black;" src="{{profile.profile_image_url}}">
+        </a>
+    </div>
     {%endfor%}
 </main>
 {% endblock %}
