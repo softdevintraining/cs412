@@ -2,22 +2,40 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-<h1>{{profile.username}}'s Profile</h1>
+<h1>@{{profile.username}}</h1>
 
 <!-- this displays the QuerySet of all articles -->
 <!-- {{articles}} -->
 
-<main class="grid-container">
+
     <!-- scriplet code for a for loop -->
-    <profile>
+<profile>
+    <div style="display: flex; flex-direction: row;">
+        <img 
+            style="width: 150px; height: 150px; margin-right: 20px;"
+            src="{{profile.profile_image_url}}"/>
         <div>
-            <h2>{{profile.username}}</h2>
-            <h3>by {{profile.display_name}}</h3>
-            <p>{{profile.bio_text}}</p>
-            <p>{{profile.join_date}}</p>
+            <h3>{{profile.display_name}}</h3>
+            <div style="display: flex; flex-direction: row;">
+                <div style="margin-right: 50px;">
+                    <h2 style="margin-bottom: 0px;">Posts</h2>
+                    <p style="text-align: center;">TBD</p>
+                </div>
+                <div style="margin-right: 50px;">
+                    <h2 style="margin-bottom: 0px;">Followers</h2>
+                    <p style="text-align: center;">TBD</p>
+                </div>
+                <div style="margin-right: 50px;">
+                    <h2 style="margin-bottom: 0px;">Following</h2>
+                    <p style="text-align: center;">TBD</p>
+                </div>
+            </div>
         </div>
-        <img src="{{profile.profile_image_url}}">
-    </profile>
-    <hr>
-</main>
+    </div>
+    <div>
+        
+        <p>{{profile.bio_text}}</p>
+        <p>{{profile.join_date}}</p>
+    </div>
+</profile>
 {% endblock %}
