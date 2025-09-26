@@ -1,5 +1,6 @@
-# mini_insta/models.py
-# define data models for the mini_insta application
+# File: mini_insta/models.py
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/26/2025
+# Description: File to define data models for the mini_insta application
 
 from django.db import models
 

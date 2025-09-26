@@ -1,5 +1,7 @@
-# mini_insta/urls.py
-# url patterns for the 'mini_insta' app.
+# File: mini_insta/urls.py
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/26/2025
+# Description: File which pattern matches HTML responses to valid requests to 
+# mini_insta/
 
 from django.urls import path
 from django.conf import settings

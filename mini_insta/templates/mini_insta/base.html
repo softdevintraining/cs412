@@ -4,14 +4,17 @@
 <html>
     <head>
         <title>Mini-Insta</title>
-        <link rel="stylesheet" href="{% static 'styles-blog.css' %}">
+        <link rel="stylesheet" href="{% static 'mini_insta-styles.css' %}">
     </head>
     <body>
-        <head>
+        <!-- Displays the profile username if looking at a specific profile -->
+        {% if profile.username %}
+            <h1>Mini-Insta: @{{profile.username}}</h1>
+        {% else %}
             <h1>Mini-Insta</h1>
-            <hr size="1">
-        </head>
-        <!-- substitute specific content here -->
+        {% endif %}
+        <hr size="1">
+
         {% block content %}
         {% endblock %}
     </body>
