@@ -4,7 +4,7 @@
 <html>
     <head>
         <title>Our Blog</title>
-        <!-- <link rel="stylesheet" href="{% static 'styles-blog.css' %}"> -->
+        <link rel="stylesheet" href="{% static 'styles-blog.css' %}">
     </head>
     <body>
         <head>
@@ -13,6 +13,7 @@
                 <ul>
                     <li><a href="{% url '' %}">Random</a></li>
                     <li><a href="{% url 'show_all' %}">Show All</a></li>
+                    <li><a href="{% url 'create_article' %}">Create</a></li>
                 </ul>
             </nav>
         </head>
