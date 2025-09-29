@@ -11,4 +11,5 @@ from . import views
 urlpatterns = [
     path(r'', views.ProfileListView.as_view(), name="show_all_profiles"),
     path(r'profile/<int:pk>', views.ProfileDetailView.as_view(), name="show_profile"),
+    path(r'post/<int:pk>', views.PostDetailView.as_view(), name="show_post"),
 ]

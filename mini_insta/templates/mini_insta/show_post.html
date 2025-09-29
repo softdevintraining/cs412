@@ -1,0 +1,21 @@
+<!-- mini_insta/show_all.html -->
+{% extends 'mini_insta/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- creates a table to store the information of the current profile -->
+<h3>Post by @{{post.profile.username}}</h3>
+{% if post.get_all_photos.first.image_url %}
+    {% for photo in post.get_all_photos %}
+        <img src="{{photo.image_url}}" />
+    {% endfor %}
+{% else %}
+    <p>No image</p>
+    <img src="{% static 'no_image_available.png' %}"/>
+{% endif %}
+<div>
+    <p>{{post.caption}}</p>
+    <p>{{post.timestamp}}</p>
+</div>
+{% endblock %}

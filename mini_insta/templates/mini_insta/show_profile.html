@@ -1,5 +1,6 @@
-<!-- mini_insta/show_all.html -->
+<!-- mini_insta/show_profile.html -->
 {% extends 'mini_insta/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -31,4 +32,19 @@
         </div>
     </div>
 </main>
+
+<h3>Posts</h3>
+{% for post in profile.get_all_posts %}
+    <a href="{% url 'show_post' post.pk %}">
+        {% if post.get_all_photos.first %}
+            <img src="{{post.get_all_photos.first.image_url}}" />
+        {% else %}
+            <img src="{% static 'no_image_available.png' %}"/>
+        {% endif %}
+        <div>
+            <p>{{post.caption}}</p>
+            <p>{{post.timestamp}}</p>
+        </div>
+    </a>
+{% endfor %}
 {% endblock %}
