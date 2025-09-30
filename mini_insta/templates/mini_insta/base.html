@@ -20,6 +20,9 @@
     </body>
     <hr size="1">
     <footer>
+        {% if profile %}
+            <a href="{% url 'create_post' profile.pk %}">Create a Post</a>
+        {% endif %}
         <a href="{% url 'show_all_profiles' %}">Return to ListView</a>
     </footer>
 </html>

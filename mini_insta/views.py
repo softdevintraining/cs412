@@ -3,8 +3,11 @@
 # Description: Views file which handles responses to requests to mini_insta/
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import Profile, Post
+from django.views.generic import ListView, DetailView, CreateView
+from .models import Profile, Post, Photo
+from .forms import CreatePostForm
+from django.urls import reverse
+from django.http import HttpResponse
 
 # Create your views here.
 class ProfileListView(ListView):
@@ -24,3 +27,45 @@ class PostDetailView(DetailView):
     model = Post
     template_name = "mini_insta/show_post.html"
     context_object_name = "post"
+
+class CreatePostView(CreateView):
+    '''A view to handle the creation of a new Post.'''
+
+    form_class = CreatePostForm
+    template_name = "mini_insta/create_post_form.html"
+
+    def get_success_url(self):
+        '''Provide a URL to redirect to after creating a new Comment.'''
+
+        # create and return a URL
+        # return reverse('show_all') # not ideal; we will return to this
+        # retrieve the PK from the URL pattern
+        pk = self.kwargs['pk']
+        # call reverse to generate the URL for this Article
+        
+        return reverse('show_post', kwargs={'pk': Post.objects.last().pk})
+
+    def get_context_data(self):
+        '''Return the dictionary of context variabels for use in the template.'''
+        context = super().get_context_data()
+
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        context['profile'] = profile
+        return context
+
+    def form_valid(self, form):
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        form.instance.profile = profile
+
+        if (self.request.POST):
+            form.instance.save()
+            photo = Photo()
+            photo.post = form.instance
+            photo.image_url = self.request.POST['image_url']
+            photo.save()
+        
+        return super().form_valid(form)

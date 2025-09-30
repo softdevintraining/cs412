@@ -64,7 +64,7 @@ class CreateCommentView(CreateView):
         return reverse('article', kwargs={'pk':pk})
     
     def get_context_data(self):
-        '''Return the dictionary of contexxt variabels for use in the template.'''
+        '''Return the dictionary of context variabels for use in the template.'''
 
         # calling the superclass method
         context = super().get_context_data()
@@ -77,7 +77,7 @@ class CreateCommentView(CreateView):
         context['article'] = article
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form, request):
         '''This method handles the form submission and save the
         new object to the Django database.
         We need to add the foreign key (of the Article) to the Comment
