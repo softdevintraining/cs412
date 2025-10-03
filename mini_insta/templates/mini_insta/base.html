@@ -1,4 +1,7 @@
 <!-- mini_insta/base.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025 -->
+<!-- Description: template that renders the base elements of mini_insta app -->
+
 {% load static %}
 
 <html>
@@ -20,9 +23,11 @@
     </body>
     <hr size="1">
     <footer>
+        <!-- Show create a post button if looking at a user's profile -->
         {% if profile %}
             <a href="{% url 'create_post' profile.pk %}">Create a Post</a>
         {% endif %}
+
         <a href="{% url 'show_all_profiles' %}">Return to ListView</a>
     </footer>
 </html>

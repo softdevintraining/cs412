@@ -1,6 +1,6 @@
 # File: mini_insta/views.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/26/2025
-# Description: Views file which handles responses to requests to mini_insta/
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025
+# Description: Views file which handles requests to mini_insta/
 
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
