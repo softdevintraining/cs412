@@ -40,6 +40,30 @@ header {
     margin: 40px auto;
 }
 
+.posts-grid-container {
+    display: grid;
+    /* grid-template-columns: 300px 300px 300px; */
+    grid-template-columns: repeat(4, 1fr);
+     grid-gap: 15px;
+    max-width: 90%;
+    margin: 20px auto;
+}
+
+.posts-grid-container img {
+    min-height: 300px; 
+    max-height: 300px;
+}
+
+.post-container {
+    max-width: 450px; 
+    max-height: auto; 
+    margin: auto;
+}
+
+.post-container img {
+    margin-bottom: 10px;
+}
+
 .profile {
     position: relative;
     text-align: center;
@@ -96,6 +120,10 @@ article p, article h3 {
 
 nav li {
     display: inline;
+}
+
+form {
+    color: whitesmoke;
 }
 /* responsive styles: adapt to smaller screen sizes */
 @media screen and (max-width: 980px) {

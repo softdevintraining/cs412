@@ -1,5 +1,5 @@
 # File: mini_insta/models.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/26/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025
 # Description: File to define data models for the mini_insta application
 
 from django.db import models
@@ -8,7 +8,7 @@ from django.db import models
 class Profile(models.Model):
     '''Encapsulate the data of a mini_insta Profile.'''
 
-    # data attribute for Profile
+    # data attributes for Profile model
     username = models.TextField(blank=True)
     display_name = models.TextField(blank=True)
     profile_image_url = models.URLField(blank=True)
@@ -27,7 +27,7 @@ class Profile(models.Model):
 class Post(models.Model):
     '''Encapsulate the idea of a Post on a Profile.'''
 
-    # data attributes for Post
+    # data attributes for Post model
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     caption = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now=True)
@@ -44,7 +44,7 @@ class Post(models.Model):
 class Photo(models.Model):
     '''Encapsulate the idea of the Photo on a Post.'''
 
-    # data attributes for Photo
+    # data attributes for Photo model
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True)
     timestamp = models.DateTimeField(auto_now=True)

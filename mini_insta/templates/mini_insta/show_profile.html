@@ -1,4 +1,8 @@
 <!-- mini_insta/show_profile.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025 -->
+<!-- Description: template that renders information (Posts & Photos) associated
+ with one Profile. -->
+
 {% extends 'mini_insta/base.html' %}
 {% load static %}
 
@@ -33,18 +37,24 @@
     </div>
 </main>
 
-<h3>Posts</h3>
+<h1>Posts</h1>
+<hr size="1">
+
+<main class="posts-grid-container">
 {% for post in profile.get_all_posts %}
-    <a href="{% url 'show_post' post.pk %}">
-        {% if post.get_all_photos.first %}
-            <img src="{{post.get_all_photos.first.image_url}}" />
-        {% else %}
-            <img src="{% static 'no_image_available.png' %}"/>
-        {% endif %}
-        <div>
-            <p>{{post.caption}}</p>
-            <p>{{post.timestamp}}</p>
-        </div>
-    </a>
+    <div>
+        <a href="{% url 'show_post' post.pk %}">
+            {% if post.get_all_photos.first %}
+                <img src="{{post.get_all_photos.first.image_url}}" />
+            {% else %}
+                <img src="{% static 'no_image_available.png' %}"/>
+            {% endif %}
+            <div>
+                <p>{{post.caption}}</p>
+                <p>{{post.timestamp}}</p>
+            </div>
+        </a>
+    </div>
 {% endfor %}
+</main>
 {% endblock %}

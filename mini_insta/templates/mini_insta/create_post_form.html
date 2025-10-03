@@ -1,4 +1,7 @@
-<!-- mini_insta/create_post_form.html -->
+<!-- mini_insta/templates/mini_insta/create_post_form.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025 -->
+<!-- Description: HTML template that renders the create post page that shows
+ after clicking the create a post button on some profile. -->
 {% extends 'mini_insta/base.html' %}
 {% load static %}
 
@@ -14,4 +17,5 @@
     <input type="submit" name="submit" value="Post" />
 </form>
 <a href="{% url 'show_profile' profile.pk %}"><button>Cancel</button></a>
+
 {% endblock %}

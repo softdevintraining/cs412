@@ -1,5 +1,5 @@
 # File: mini_insta/urls.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 9/26/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025
 # Description: File which pattern matches HTML responses to valid requests to 
 # mini_insta/
 
