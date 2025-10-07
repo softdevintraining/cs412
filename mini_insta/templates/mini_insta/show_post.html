@@ -11,9 +11,9 @@
 <h3>Post by @{{post.profile.username}}</h3>
 <div class="post-container">
     <!-- Display post's associated photos, otherwise display default img -->
-    {% if post.get_all_photos.first.image_url %}
+    {% if post.get_all_photos.first %}
         {% for photo in post.get_all_photos %}
-            <img src="{{photo.image_url}}" />
+            <img src="{{photo.get_image_url}}" />
         {% endfor %}
     {% else %}
         <p>No image</p>

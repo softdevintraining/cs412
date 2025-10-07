@@ -3,9 +3,9 @@
 # Description: Views file which handles requests to mini_insta/
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Profile, Post, Photo
-from .forms import CreatePostForm
+from .forms import CreatePostForm, UpdateProfileForm
 from django.urls import reverse
 from django.http import HttpResponse
 
@@ -62,10 +62,27 @@ class CreatePostView(CreateView):
         form.instance.profile = profile
 
         if (self.request.POST):
+            files = self.request.FILES.getlist('files')
             form.instance.save()
-            photo = Photo()
-            photo.post = form.instance
-            photo.image_url = self.request.POST['image_url']
-            photo.save()
+            for file in files:
+                
+                photo = Photo()
+                photo.post = form.instance
+                photo.image_file = file
+                photo.save()
+                print("photo would be saved here.")
+
+            # form.instance.save()
+            # photo = Photo()
+            # photo.post = form.instance
+            # photo.image_url = self.request.POST['image_url']
+            # photo.save()
         
         return super().form_valid(form)
+
+class UpdateProfileView(UpdateView):
+    '''A view to handle the update of a Profile.'''
+
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = 'mini_insta/update_profile_form.html'

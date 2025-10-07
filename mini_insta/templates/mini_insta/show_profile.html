@@ -33,6 +33,7 @@
         <div>
             <p>{{profile.bio_text}}</p>
             <p>{{profile.join_date}}</p>
+            <a href="{% url 'update_profile' profile.pk %}">Update Profile</a>
         </div>
     </div>
 </main>
@@ -45,7 +46,7 @@
     <div>
         <a href="{% url 'show_post' post.pk %}">
             {% if post.get_all_photos.first %}
-                <img src="{{post.get_all_photos.first.image_url}}" />
+                <img src="{{post.get_all_photos.first.get_image_url}}" />
             {% else %}
                 <img src="{% static 'no_image_available.png' %}"/>
             {% endif %}

@@ -3,6 +3,7 @@
 # Description: File to define data models for the mini_insta application
 
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Profile(models.Model):
@@ -14,6 +15,9 @@ class Profile(models.Model):
     profile_image_url = models.URLField(blank=True)
     bio_text = models.TextField(blank=True)
     join_date = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse('show_profile', kwargs={'pk': self.pk}) 
 
     def get_all_posts(self):
         '''Return a QuerySet of Posts about this Profile.'''
@@ -47,8 +51,21 @@ class Photo(models.Model):
     # data attributes for Photo model
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True)
+    image_file = models.ImageField(blank=True)
     timestamp = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         '''Return a string representation of this Photo.'''
-        return f'Photo for: \'{self.post.caption}\''
+        if (self.image_file):
+            return f'Photo file for: \'{self.post.caption}\''
+        elif (self.image_url):
+            return f'Photo url for: \'{self.post.caption}\''
+        else:
+            return f'Photo for: \'{self.post.caption}\''
+    
+    def get_image_url(self):
+        if (self.image_file):
+            print(self.image_file.url)
+            return (self.image_file.url)
+        else:
+            return (self.image_url)
