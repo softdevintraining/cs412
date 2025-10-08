@@ -22,6 +22,8 @@
     <div>
         <p>{{post.caption}}</p>
         <p>{{post.timestamp}}</p>
+        <a href="{% url 'update_post' post.pk %}">Update Post</a>
+        <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
     </div>
 </div>
 {% endblock %}

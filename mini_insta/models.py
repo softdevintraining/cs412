@@ -36,6 +36,9 @@ class Post(models.Model):
     caption = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now=True)
 
+    def get_absolute_url(self):
+        return reverse('show_post', kwargs={'pk': self.pk}) 
+    
     def get_all_photos(self):
         '''Return a QuerySet of comments about this article.'''
         photos = Photo.objects.filter(post=self).order_by('timestamp')

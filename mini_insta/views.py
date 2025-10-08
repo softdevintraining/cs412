@@ -3,9 +3,9 @@
 # Description: Views file which handles requests to mini_insta/
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Profile, Post, Photo
-from .forms import CreatePostForm, UpdateProfileForm
+from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
 from django.urls import reverse
 from django.http import HttpResponse
 
@@ -86,3 +86,44 @@ class UpdateProfileView(UpdateView):
     model = Profile
     form_class = UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
+
+class DeletePostView(DeleteView):
+    '''A view to handle the deletion of a Post.'''
+
+    model = Post
+    template_name = 'mini_insta/delete_post_form.html'
+
+    def get_context_data(self, **kwargs):
+        '''Provides context data needed for this view.'''
+        context = super().get_context_data()
+
+        pk = self.kwargs['pk']
+        post = Post.objects.get(pk=pk)
+        profile = post.profile
+        
+        context['profile'] = profile
+        return context
+
+    def get_success_url(self):
+        return self.get_context_data()['profile'].get_absolute_url()
+        
+class UpdatePostView(UpdateView):
+    '''A view to handle updating a Post.'''
+
+    model = Post
+    form_class = UpdatePostForm
+    template_name = 'mini_insta/update_post_form.html'
+
+    # def get_context_data(self, **kwargs):
+    #     '''Provides context data needed for this view.'''
+    #     context = super().get_context_data()
+
+    #     pk = self.kwargs['pk']
+    #     post = Post.objects.get(pk=pk)
+    #     profile = post.profile
+        
+    #     context['profile'] = profile
+    #     return context
+
+    # def get_success_url(self):
+    #     return reverse('show_post', kwargs={'pk':self.pk})

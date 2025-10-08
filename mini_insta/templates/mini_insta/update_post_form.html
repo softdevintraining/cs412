@@ -1,0 +1,19 @@
+<!-- mini_insta/templates/mini_insta/update_post_form.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025 -->
+<!-- Description: HTML template that renders the delete post form -->
+{% extends 'mini_insta/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Delete Post</h1>
+
+<form method="POST" action="{% url 'update_post' post.pk %}">
+    {% csrf_token %}
+    {{form.as_table}} <br>
+    <input type="submit" name="submit" value="Update" />
+</form>
+<form method="GET" action="{% url 'show_post' post.pk %}">
+    <input type="submit" name="submit" value="Cancel" />
+</form>
+
+{% endblock %}
