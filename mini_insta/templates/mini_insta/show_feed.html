@@ -1,0 +1,28 @@
+<!-- mini_insta/show_feed.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/7/2025 -->
+<!-- Description: HTML template that renders the page that shows a Profile's
+ feed of Posts. -->
+{% extends 'mini_insta/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- creates a table to store the profiles in -->
+<main class="posts-grid-container">
+{% for post in profile.get_post_feed %}
+    <div>
+        <a href="{% url 'show_post' post.pk %}">
+            {% if post.get_all_photos.first %}
+                <img src="{{post.get_all_photos.first.get_image_url}}" />
+            {% else %}
+                <img src="{% static 'no_image_available.png' %}"/>
+            {% endif %}
+            <div>
+                <p>@{{post.profile.username}}</p>
+                <p>{{post.caption}}</p>
+                <p>{{post.timestamp}}</p>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+</main>
+{% endblock %}

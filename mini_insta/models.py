@@ -40,6 +40,16 @@ class Profile(models.Model):
     
     def get_num_following(self):
         return len(Follow.objects.filter(follower_profile=self))
+    
+    def get_post_feed(self):
+        usernames = []
+        for follow in self.get_following():
+            usernames.append(follow.profile.username)
+
+        profiles = Profile.objects.filter(username__in=usernames)
+        post_feed = Post.objects.filter(profile__in=profiles)
+
+        return post_feed
 
     def __str__(self):
         '''return a string representation of this model instance.'''
