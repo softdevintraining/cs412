@@ -20,7 +20,11 @@
         <img src="{% static 'no_image_available.png' %}"/>
     {% endif %}
     <div>
+        <p>Liked by {{post.get_likes|length}}</p>
         <p>{{post.caption}}</p>
+        {% for comment in post.get_all_comments %}
+            <p>@{{comment.profile.username}}: {{comment.text}}</p>
+        {% endfor %}
         <p>{{post.timestamp}}</p>
         <a href="{% url 'update_post' post.pk %}">Update Post</a>
         <a href="{% url 'delete_post' post.pk %}">Delete Post</a>

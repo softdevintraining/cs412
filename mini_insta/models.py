@@ -23,6 +23,23 @@ class Profile(models.Model):
         '''Return a QuerySet of Posts about this Profile.'''
         posts = Post.objects.filter(profile=self)
         return posts
+    
+    def get_followers(self):
+        followers = []
+
+        for follow in Follow.objects.filter(profile=self):
+            followers.append(follow.follower_profile)
+
+        return followers
+
+    def get_num_followers(self):
+        return len(self.get_followers())
+    
+    def get_following(self):
+        return list(Follow.objects.filter(follower_profile=self))
+    
+    def get_num_following(self):
+        return len(Follow.objects.filter(follower_profile=self))
 
     def __str__(self):
         '''return a string representation of this model instance.'''
@@ -43,7 +60,15 @@ class Post(models.Model):
         '''Return a QuerySet of comments about this article.'''
         photos = Photo.objects.filter(post=self).order_by('timestamp')
         return photos
+    
+    def get_all_comments(self):
+        comments = Comment.objects.filter(post=self).order_by('timestamp')
+        return comments
 
+    def get_likes(self):
+        likes = Like.objects.filter(post=self).order_by('timestamp')
+        return likes 
+    
     def __str__(self):
         '''Return a string representation of this Post.'''
         return f'{self.caption}'
@@ -72,3 +97,33 @@ class Photo(models.Model):
             return (self.image_file.url)
         else:
             return (self.image_url)
+        
+class Follow(models.Model):
+    '''Encapsulate the idea of a Follow on a Profile.'''
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile")
+    follower_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="follower_profile")
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        '''return a string representation of this model instance.'''
+        return f'@{self.follower_profile.username} follows @{self.profile.username}.'
+    
+class Comment(models.Model):
+    '''Encapsulate the idea of a Comment on a Post.'''
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+    text = models.TextField(blank=True)
+
+    def __str__(self):
+        return f'{self.profile.username} comments: \'{self.text}\' on {self.post.profile}\'s post.'
+    
+
+class Like(models.Model):
+    '''Encapsulate the idea of a Like on a Post.'''
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.profile.username} Likes {self.post.profile}\'s post.'
