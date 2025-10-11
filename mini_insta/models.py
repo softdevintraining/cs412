@@ -9,7 +9,7 @@ from django.urls import reverse
 class Profile(models.Model):
     '''Encapsulate the data of a mini_insta Profile.'''
 
-    # data attributes for Profile model
+    # Data attributes for Profile model
     username = models.TextField(blank=True)
     display_name = models.TextField(blank=True)
     profile_image_url = models.URLField(blank=True)
@@ -17,6 +17,7 @@ class Profile(models.Model):
     join_date = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
+        '''Returns a url that displays the detail page of this Profile.'''
         return reverse('show_profile', kwargs={'pk': self.pk}) 
 
     def get_all_posts(self):
@@ -25,6 +26,7 @@ class Profile(models.Model):
         return posts
     
     def get_followers(self):
+        '''Returns a QuerySet containing the followers of this Profile.'''
         followers = []
 
         for follow in Follow.objects.filter(profile=self):
@@ -33,15 +35,19 @@ class Profile(models.Model):
         return followers
 
     def get_num_followers(self):
+        '''Returns the number of this Profile's followers.'''
         return len(self.get_followers())
     
     def get_following(self):
+        '''Returns a list containing the Profiles this Profile follows.'''
         return list(Follow.objects.filter(follower_profile=self))
     
     def get_num_following(self):
+        '''Returns the number of Profiles this Profile follows.'''
         return len(Follow.objects.filter(follower_profile=self))
     
     def get_post_feed(self):
+        '''Returns the posts that should appear in this Profile's feed.'''
         usernames = []
         for follow in self.get_following():
             usernames.append(follow.profile.username)
@@ -64,18 +70,21 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
+        '''Returns a url that displays the detail page of this Post.'''
         return reverse('show_post', kwargs={'pk': self.pk}) 
     
     def get_all_photos(self):
-        '''Return a QuerySet of comments about this article.'''
+        '''Return a QuerySet of Photos related to this Post.'''
         photos = Photo.objects.filter(post=self).order_by('timestamp')
         return photos
     
     def get_all_comments(self):
+        '''Return a QuerySet of Comments related to this Post.'''
         comments = Comment.objects.filter(post=self).order_by('timestamp')
         return comments
 
     def get_likes(self):
+        '''Return a QuerySet of Likes related to this Post.'''
         likes = Like.objects.filter(post=self).order_by('timestamp')
         return likes 
     
@@ -102,6 +111,7 @@ class Photo(models.Model):
             return f'Photo for: \'{self.post.caption}\''
     
     def get_image_url(self):
+        '''Return the url representation of this Photo.'''
         if (self.image_file):
             print(self.image_file.url)
             return (self.image_file.url)
@@ -110,8 +120,12 @@ class Photo(models.Model):
         
 class Follow(models.Model):
     '''Encapsulate the idea of a Follow on a Profile.'''
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile")
-    follower_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="follower_profile")
+
+    # data attributes for Follow model
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, 
+                                related_name="profile")
+    follower_profile = models.ForeignKey(Profile, on_delete=models.CASCADE,
+                                         related_name="follower_profile")
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -120,20 +134,26 @@ class Follow(models.Model):
     
 class Comment(models.Model):
     '''Encapsulate the idea of a Comment on a Post.'''
+
+    # data attributes for Post model
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
     text = models.TextField(blank=True)
 
     def __str__(self):
+        '''Return a string representation of this Comment.'''
         return f'{self.profile.username} comments: \'{self.text}\' on {self.post.profile}\'s post.'
     
 
 class Like(models.Model):
     '''Encapsulate the idea of a Like on a Post.'''
+
+    # data attributes for Like model
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        '''Return a string representation of this Like.'''
         return f'{self.profile.username} Likes {self.post.profile}\'s post.'

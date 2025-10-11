@@ -1,5 +1,5 @@
 <!-- mini_insta/show_profile.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025 -->
 <!-- Description: template that renders information (Posts & Photos) associated
  with one Profile. -->
 
@@ -42,6 +42,7 @@
 <hr size="1">
 
 <main class="posts-grid-container">
+<!-- for loop to load all the posts associated with a profile -->
 {% for post in profile.get_all_posts %}
     <div>
         <a href="{% url 'show_post' post.pk %}">

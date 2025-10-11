@@ -1,13 +1,29 @@
-<!-- mini_insta/show_feed.html -->
+<!-- mini_insta/templates/mini_insta/search_results.html -->
 <!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025 -->
-<!-- Description: HTML template that renders the page that shows a Profile's
- feed of Posts. -->
+<!-- Description: HTML template that renders the results of search -->
 {% extends 'mini_insta/base.html' %}
 {% load static %}
 
 {% block content %}
-<!-- displays each post in the profile's feed -->
-{% for post in profile.get_post_feed %}
+<h3>Profiles matching the query for "{{query}}" </h3>
+<main class="grid-container">
+    <!-- for loop to load each profile that matches the query -->
+    {% for profile in profiles %}
+    <div class="profile">
+        <div>
+            <h2>@{{profile.username}}</h2>
+            <h3>{{profile.display_name}}</h3>
+        </div>
+        <a href="{% url 'show_profile' profile.pk %}">
+        <img src="{{profile.profile_image_url}}">
+        </a>
+    </div>
+    {%endfor%}
+</main>
+<h3>Posts matching the query for "{{query}}" </h3>
+
+<!-- for loop to load each post that matches the query -->
+{% for post in posts %}
     <div class="post-container">
         <p>@{{post.profile.username}}</p>
         <img style="width: 100px;" src="{{post.profile.profile_image_url}}" />
@@ -24,4 +40,5 @@
         </a>
     </div>
 {% endfor %}
+
 {% endblock %}

@@ -1,5 +1,5 @@
 <!-- mini_insta/show_all.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025 -->
 <!-- Description: HTML template that displays a Post record and its Photos -->
 
 {% extends 'mini_insta/base.html' %}
@@ -16,7 +16,6 @@
             <img src="{{photo.get_image_url}}" />
         {% endfor %}
     {% else %}
-        <p>No image</p>
         <img src="{% static 'no_image_available.png' %}"/>
     {% endif %}
     <div>

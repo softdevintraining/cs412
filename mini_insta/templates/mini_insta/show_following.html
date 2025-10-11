@@ -1,13 +1,13 @@
 <!-- mini_insta/show_following.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025 -->
-<!-- Description: HTML template that renders the page that shows all of a
- Profile that the Profile in context is following. -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025 -->
+<!-- Description: HTML template that renders the page that shows all of the
+ Profiles that the Profile in context is following. -->
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
 <!-- creates a table to store the profiles in -->
 <main class="grid-container">
-    <!-- for loop to load each profile stored in the mini_insta database -->
+    <!-- for loop to load each profile followed by the profile in context -->
     {% for profile in profile.get_following %}
     <div class="profile">
         <div>

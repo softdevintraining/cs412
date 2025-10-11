@@ -1,5 +1,5 @@
 # File: mini_insta/views.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025
 # Description: Views file which handles requests to mini_insta/
 
 from django.shortcuts import render
@@ -37,12 +37,10 @@ class CreatePostView(CreateView):
     def get_success_url(self):
         '''Provide a URL to redirect to after creating a new Comment.'''
 
-        # create and return a URL
-        # return reverse('show_all') # not ideal; we will return to this
         # retrieve the PK from the URL pattern
         pk = self.kwargs['pk']
+
         # call reverse to generate the URL for this Article
-        
         return reverse('show_post', kwargs={'pk': Post.objects.last().pk})
 
     def get_context_data(self):
@@ -56,27 +54,22 @@ class CreatePostView(CreateView):
         return context
 
     def form_valid(self, form):
+        '''Overwrite form_valid method.'''
         pk = self.kwargs['pk']
         profile = Profile.objects.get(pk=pk)
 
         form.instance.profile = profile
 
         if (self.request.POST):
+            # create Photo objects and relate to them to created post
             files = self.request.FILES.getlist('files')
             form.instance.save()
+
             for file in files:
-                
                 photo = Photo()
                 photo.post = form.instance
                 photo.image_file = file
                 photo.save()
-                print("photo would be saved here.")
-
-            # form.instance.save()
-            # photo = Photo()
-            # photo.post = form.instance
-            # photo.image_url = self.request.POST['image_url']
-            # photo.save()
         
         return super().form_valid(form)
 
@@ -114,31 +107,20 @@ class UpdatePostView(UpdateView):
     form_class = UpdatePostForm
     template_name = 'mini_insta/update_post_form.html'
 
-    # def get_context_data(self, **kwargs):
-    #     '''Provides context data needed for this view.'''
-    #     context = super().get_context_data()
-
-    #     pk = self.kwargs['pk']
-    #     post = Post.objects.get(pk=pk)
-    #     profile = post.profile
-        
-    #     context['profile'] = profile
-    #     return context
-
-    # def get_success_url(self):
-    #     return reverse('show_post', kwargs={'pk':self.pk})
-
 class ShowFollowersDetailView(DetailView):
+    '''Define a view class to show followers of a Profile.'''
     model = Profile
     template_name = "mini_insta/show_followers.html"
     context_object_name = "profile"
 
 class ShowFollowingDetailView(DetailView):
+    '''Define a view class to show following of a Profile.'''
     model = Profile
     template_name = "mini_insta/show_following.html"
     context_object_name = "profile"
 
 class PostFeedListView(ListView):
+    '''Define a view class to show the post feed of a Profile.'''
     model = Post
     template_name = "mini_insta/show_feed.html"
     context_object_name = "posts"
@@ -154,4 +136,54 @@ class PostFeedListView(ListView):
         return context
 
     def get_success_url(self):
+        '''Generates a URL to redirect to.'''
         return self.get_context_data()['profile'].get_absolute_url()
+    
+class SearchView(ListView):
+    '''Define a view class to handle searching from a Profile.'''
+    template_name = "mini_insta/search_results.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Overwrite dispatch method to handle template forwarding.'''
+        if ('query' not in self.request.GET):
+            self.template_name = "mini_insta/search.html"
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        '''Overwrite queryset method to grab relevant Posts.'''
+        query = None
+        if ('query' in self.request.GET):
+            query = self.request.GET.get('query')
+            return Post.objects.filter(caption__contains=query)
+        else:
+            return []
+    
+    def get_context_data(self):
+        '''Overwrite get_context_data to define necessary context variables.'''
+        context = super().get_context_data()
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+        matching_posts = None
+        matching_profiles = None
+
+        if ('query' in self.request.GET):
+            query = self.request.GET.get('query')
+            context['query'] = query
+            matching_posts = self.get_queryset()
+            matching_profiles = list(Profile.objects.filter(username__contains=query))
+            if matching_profiles != None:
+                for item in Profile.objects.filter(display_name__contains=query):
+                    if item in matching_profiles:
+                        continue
+                    else:
+                        matching_profiles.append(item)
+                for item in Profile.objects.filter(bio_text__contains=query):
+                    if item in matching_profiles:
+                        continue
+                    else:
+                        matching_profiles.append(item)
+
+        context['profile'] = profile
+        context['posts'] = matching_posts
+        context['profiles'] = matching_profiles
+        return context

@@ -1,5 +1,5 @@
 # File: mini_insta/urls.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025
 # Description: File which pattern matches HTML responses to valid requests to 
 # mini_insta/
 
@@ -19,4 +19,5 @@ urlpatterns = [
     path(r'profile/<int:pk>/followers', views.ShowFollowersDetailView.as_view(), name="show_followers"),
     path(r'profile/<int:pk>/following', views.ShowFollowingDetailView.as_view(), name="show_following"),
     path(r'profile/<int:pk>/feed', views.PostFeedListView.as_view(), name="show_feed"),
+    path(r'profile/<int:pk>/search_results', views.SearchView.as_view(), name="search"),
 ]
