@@ -1,11 +1,12 @@
 <!-- mini_insta/show_followers.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025 -->
 <!-- Description: HTML template that renders the page that shows all followers
  for the profile in context. -->
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
 <!-- creates a table to store the profiles in -->
+<h2>@{{profile.username}}'s followers:</h2>
 <main class="grid-container">
     <!-- for loop to load each profile that follows the profile in context -->
     {% for profile in profile.get_followers %}

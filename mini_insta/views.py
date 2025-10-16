@@ -1,5 +1,5 @@
 # File: mini_insta/views.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025
 # Description: Views file which handles requests to mini_insta/
 
 from django.shortcuts import render

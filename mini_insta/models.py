@@ -1,5 +1,5 @@
 # File: mini_insta/models.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/3/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025
 # Description: File to define data models for the mini_insta application
 
 from django.db import models
@@ -40,7 +40,11 @@ class Profile(models.Model):
     
     def get_following(self):
         '''Returns a list containing the Profiles this Profile follows.'''
-        return list(Follow.objects.filter(follower_profile=self))
+        following = []
+        for follow in Follow.objects.filter(follower_profile=self):
+            following.append(follow.profile)
+        
+        return following
     
     def get_num_following(self):
         '''Returns the number of Profiles this Profile follows.'''

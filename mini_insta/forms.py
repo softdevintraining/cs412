@@ -1,5 +1,5 @@
 # File: mini_insta/views.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/10/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025
 # Description: File which houses forms associated with the mini_insta app
 
 from django import forms
