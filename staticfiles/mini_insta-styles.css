@@ -11,7 +11,7 @@ ul, li {
     list-style-type: none;
 }
 
-h1, h2, h3, p, a {
+h1, h2, h3, h4, p, a {
     color: whitesmoke;
 }
 
@@ -95,7 +95,7 @@ header {
     margin-bottom: 0px;
 }
 
-.user-info p {
+.user-info p, h4 {
     text-align: center;
 }
 
