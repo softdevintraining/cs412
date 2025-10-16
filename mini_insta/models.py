@@ -147,7 +147,7 @@ class Comment(models.Model):
 
     def __str__(self):
         '''Return a string representation of this Comment.'''
-        return f'{self.profile.username} comments: \'{self.text}\' on {self.post.profile}\'s post.'
+        return f'{self.profile.username} comments: \'{self.text}\' on {self.post.profile.username}\'s post.'
     
 
 class Like(models.Model):
@@ -160,4 +160,4 @@ class Like(models.Model):
 
     def __str__(self):
         '''Return a string representation of this Like.'''
-        return f'{self.profile.username} Likes {self.post.profile}\'s post.'
+        return f'{self.profile.username} likes {self.post.profile.username}\'s post.'
