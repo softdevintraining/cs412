@@ -54,7 +54,7 @@ class Profile(models.Model):
         '''Returns the posts that should appear in this Profile's feed.'''
         usernames = []
         for follow in self.get_following():
-            usernames.append(follow.profile.username)
+            usernames.append(follow.username)
 
         profiles = Profile.objects.filter(username__in=usernames)
         post_feed = Post.objects.filter(profile__in=profiles)
