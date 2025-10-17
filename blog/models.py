@@ -2,6 +2,7 @@
 # define data models for the blog application
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User # for auth
 
 # Create your models here.
 class Article(models.Model):
@@ -14,6 +15,7 @@ class Article(models.Model):
     published = models.DateTimeField(auto_now=True)
     # image_url = models.URLField(blank=True) # url as a string
     image_file = models.ImageField(blank=True) # actual image file
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         '''return a string representation of this model instance.'''
