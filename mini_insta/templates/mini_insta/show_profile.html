@@ -33,7 +33,9 @@
         <div>
             <p>{{profile.bio_text}}</p>
             <p>{{profile.join_date}}</p>
-            <a href="{% url 'update_profile' profile.pk %}">Update Profile</a>
+            {% if user == profile.user %}
+                <a href="{% url 'update_profile' %}">Update Profile</a>
+            {% endif %}
         </div>
     </div>
 </main>

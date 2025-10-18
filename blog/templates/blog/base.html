@@ -19,6 +19,7 @@
                         <form method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}
                         <button type="submit">Logout</button>
+                        </form>
                     {% else %}
                         <li><a href="{% url 'login' %}">Login</a></li>
                     {% endif %}

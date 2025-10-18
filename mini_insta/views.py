@@ -3,11 +3,13 @@
 # Description: Views file which handles requests to mini_insta/
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .models import Profile, Post, Photo
 from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
 from django.urls import reverse
 from django.http import HttpResponse
+
+from django.contrib.auth.mixins import LoginRequiredMixin ## for auth
 
 # Create your views here.
 class ProfileListView(ListView):
@@ -28,7 +30,7 @@ class PostDetailView(DetailView):
     template_name = "mini_insta/show_post.html"
     context_object_name = "post"
 
-class CreatePostView(CreateView):
+class CreatePostView(LoginRequiredMixin, CreateView):
     '''A view to handle the creation of a new Post.'''
 
     form_class = CreatePostForm
@@ -47,18 +49,22 @@ class CreatePostView(CreateView):
         '''Return the dictionary of context variabels for use in the template.'''
         context = super().get_context_data()
 
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        # pk = self.kwargs['pk']
+        # profile = Profile.objects.get(pk=pk)
+        profile = self.get_object()
 
         context['profile'] = profile
         return context
 
     def form_valid(self, form):
         '''Overwrite form_valid method.'''
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        # pk = self.kwargs['pk']
+        user = self.request.user
+        # profile = Profile.objects.get(pk=pk)
+        profile = self.get_object()
 
         form.instance.profile = profile
+        form.instance.user = user
 
         if (self.request.POST):
             # create Photo objects and relate to them to created post
@@ -72,15 +78,38 @@ class CreatePostView(CreateView):
                 photo.save()
         
         return super().form_valid(form)
+    
+    def get_object(self):
+        user = self.request.user
+        profile = Profile.objects.get(user=user)
+        # queryset = Profile.objects.get(user=user, )
+        return profile
+    
+    def get_login_url(self):
+        return reverse('login')
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
     '''A view to handle the update of a Profile.'''
 
     model = Profile
     form_class = UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
+    
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super().form_valid(form)
+    
+    def get_object(self):
+        user = self.request.user
+        profile = Profile.objects.get(user=user)
+        # queryset = Profile.objects.get(user=user, )
+        return profile
+    
+    def get_login_url(self):
+        return reverse('login')
 
-class DeletePostView(DeleteView):
+class DeletePostView(LoginRequiredMixin, DeleteView):
     '''A view to handle the deletion of a Post.'''
 
     model = Post
@@ -99,13 +128,23 @@ class DeletePostView(DeleteView):
 
     def get_success_url(self):
         return self.get_context_data()['profile'].get_absolute_url()
-        
-class UpdatePostView(UpdateView):
+    
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super().form_valid(form)
+            
+class UpdatePostView(LoginRequiredMixin, UpdateView):
     '''A view to handle updating a Post.'''
 
     model = Post
     form_class = UpdatePostForm
     template_name = 'mini_insta/update_post_form.html'
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super().form_valid(form)
 
 class ShowFollowersDetailView(DetailView):
     '''Define a view class to show followers of a Profile.'''
@@ -119,7 +158,7 @@ class ShowFollowingDetailView(DetailView):
     template_name = "mini_insta/show_following.html"
     context_object_name = "profile"
 
-class PostFeedListView(ListView):
+class PostFeedListView(LoginRequiredMixin, ListView):
     '''Define a view class to show the post feed of a Profile.'''
     model = Post
     template_name = "mini_insta/show_feed.html"
@@ -129,8 +168,9 @@ class PostFeedListView(ListView):
         '''Provides context data needed for this view.'''
         context = super().get_context_data()
 
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        # pk = self.kwargs['pk']
+        # profile = Profile.objects.get(pk=pk)
+        profile = self.get_object()
         
         context['profile'] = profile
         return context
@@ -139,7 +179,21 @@ class PostFeedListView(ListView):
         '''Generates a URL to redirect to.'''
         return self.get_context_data()['profile'].get_absolute_url()
     
-class SearchView(ListView):
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super().form_valid(form)
+    
+    def get_object(self):
+        user = self.request.user
+        profile = Profile.objects.get(user=user)
+        # queryset = Profile.objects.get(user=user, )
+        return profile
+    
+    def get_login_url(self):
+        return reverse('login')
+
+class SearchView(LoginRequiredMixin, ListView):
     '''Define a view class to handle searching from a Profile.'''
     template_name = "mini_insta/search_results.html"
 
@@ -161,8 +215,8 @@ class SearchView(ListView):
     def get_context_data(self):
         '''Overwrite get_context_data to define necessary context variables.'''
         context = super().get_context_data()
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        # pk = self.kwargs['pk']
+        profile = self.get_object()
         matching_posts = None
         matching_profiles = None
 
@@ -187,3 +241,22 @@ class SearchView(ListView):
         context['posts'] = matching_posts
         context['profiles'] = matching_profiles
         return context
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super().form_valid(form)
+    
+    def get_object(self):
+        user = self.request.user
+        profile = Profile.objects.get(user=user)
+        # queryset = Profile.objects.get(user=user, )
+        return profile
+    
+    def get_login_url(self):
+        return reverse('login')
+    
+    
+class LoggedOutView(TemplateView):
+    '''A view to show the logout confirmation page.'''
+    template_name="mini_insta/logged_out.html"

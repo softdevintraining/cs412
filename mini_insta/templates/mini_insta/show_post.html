@@ -25,8 +25,10 @@
             <p>@{{comment.profile.username}}: {{comment.text}}</p>
         {% endfor %}
         <p>{{post.timestamp}}</p>
-        <a href="{% url 'update_post' post.pk %}">Update Post</a>
-        <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
+        {% if user == post.profile.user %}
+            <a href="{% url 'update_post' post.pk %}">Update Post</a>
+            <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
