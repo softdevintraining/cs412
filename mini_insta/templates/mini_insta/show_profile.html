@@ -20,11 +20,11 @@
                         <h4>{{profile.get_all_posts|length}}</h4>
                     </div>
                     <div class="user-info">
-                        <h2>Followers</h2>
+                        <a href="{%url 'show_followers' profile.pk %}"><h2>Followers</h2></a>
                         <h4>{{profile.get_num_followers}}</h4>
                     </div>
                     <div class="user-info">
-                        <h2>Following</h2>
+                        <a href="{% url 'show_following' profile.pk %}"><h2>Following</h2></a>
                         <h4>{{profile.get_num_following}}</h4>
                     </div>
                 </div>
