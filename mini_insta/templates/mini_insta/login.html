@@ -1,22 +1,25 @@
-<!-- templates/mini_insta/login.html -->
+<!-- mini_insta/templates/mini_insta/delete_post_form.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
+<!-- Description: HTML template that renders the login page -->
 {% extends 'mini_insta/base.html'%}
 
 {% block content %}
 
 <h1>Login to Mini Insta</h1>
+
+<!-- Login form -->
 <form method="POST" action="{% url 'login'%}">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Login">
-
+    
+    
     {% if request.GET.next %}
+        <!-- Redirects user to a url specified by the request if there is one -->
         <input type="hidden" name="next" value="{{request.GET.next}}"/>
     {% else %}
+        <!-- If there is no url, redirect to show all profiles page -->
         <input type="hidden" name="next" value="{% url 'show_all_profiles' %}" />
     {% endif %}
 </form>
-
-<hr>
-Don't have an account?
-<!-- <a href="{% url 'register' %}">Register here</a> -->
 {% endblock %}

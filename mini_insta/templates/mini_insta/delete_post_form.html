@@ -1,5 +1,5 @@
 <!-- mini_insta/templates/mini_insta/delete_post_form.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
 <!-- Description: HTML template that renders the delete post form -->
 {% extends 'mini_insta/base.html' %}
 {% load static %}
@@ -7,11 +7,14 @@
 {% block content %}
 <h1>Delete Post</h1>
 
+<!-- Delete a post form -->
 <form method="POST" action="{% url 'delete_post' post.pk %}">
     {% csrf_token %}
     {{post.caption}} <br>
     <input type="submit" name="submit" value="Delete" />
 </form>
+
+<!-- Show button to cancel post creation -->
 <form method="GET" action="{% url 'show_post' post.pk %}">
     <input type="submit" name="submit" value="Cancel" />
 </form>

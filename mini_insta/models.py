@@ -1,5 +1,5 @@
 # File: mini_insta/models.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025
 # Description: File to define data models for the mini_insta application
 
 from django.db import models
@@ -94,6 +94,16 @@ class Post(models.Model):
         '''Return a QuerySet of Likes related to this Post.'''
         likes = Like.objects.filter(post=self).order_by('timestamp')
         return likes 
+
+    def liked_by(self, profile):
+        '''Returns whether a profile likes a post.'''
+        likes = self.get_likes()
+        profiles = []
+        for like in likes:
+            profiles.append(like.profile)
+
+        return (profile in profiles)
+        
     
     def __str__(self):
         '''Return a string representation of this Post.'''
@@ -120,7 +130,6 @@ class Photo(models.Model):
     def get_image_url(self):
         '''Return the url representation of this Photo.'''
         if (self.image_file):
-            print(self.image_file.url)
             return (self.image_file.url)
         else:
             return (self.image_url)

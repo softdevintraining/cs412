@@ -1,5 +1,5 @@
 <!-- mini_insta/show_profile.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
 <!-- Description: template that renders information (Posts & Photos) associated
  with one Profile. -->
 
@@ -33,9 +33,31 @@
         <div>
             <p>{{profile.bio_text}}</p>
             <p>{{profile.join_date}}</p>
+            
+            <!-- Show update button to user, if it is this profile's user -->
             {% if user == profile.user %}
                 <a href="{% url 'update_profile' %}">Update Profile</a>
             {% endif %}
+
+            <div style="display: flex; gap: 5px; margin-left: auto;">
+                <!-- If the current user is not this profile's user show them
+                    the follow and unfollow buttons. -->
+                {% if user.is_authenticated %}
+                    {% if profile.user != user %}
+                        {% if followed_by %}
+                        <form method="POST" action="{% url 'delete_follow' profile.pk %}">
+                            {% csrf_token %}
+                            <button type="submit">Unfollow</button>
+                        </form>
+                        {% else %}
+                        <form method="GET" action="{% url 'create_follow' profile.pk %}">
+                            {% csrf_token %}
+                            <button type="submit">Follow</button>
+                        </form>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 </main>
@@ -48,6 +70,7 @@
 {% for post in profile.get_all_posts %}
     <div>
         <a href="{% url 'show_post' post.pk %}">
+            <!-- Grab first Photo associated with this post if there is one -->
             {% if post.get_all_photos.first %}
                 <img src="{{post.get_all_photos.first.get_image_url}}" />
             {% else %}

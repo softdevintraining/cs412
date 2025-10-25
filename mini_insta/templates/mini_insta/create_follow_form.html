@@ -1,0 +1,17 @@
+<!-- mini_insta/templates/mini_insta/create_follow_form.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
+<!-- Description: HTML template that renders the create follow page -->
+{% extends 'mini_insta/base.html' %}
+{% load static %}
+
+{% block content %}
+<h3>Are you (@{{follower.username}}) sure you want to follow @{{profile.username}}?</h3>
+
+<!-- Follow confirmation form -->
+<form method="POST" action="{% url 'create_follow' profile.pk %}">
+    {% csrf_token %}
+    <input type="submit" name="submit" value="Follow" />
+</form>
+<a href="{% url 'show_profile' profile.pk %}"><button>Cancel</button></a>
+
+{% endblock %}

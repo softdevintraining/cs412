@@ -1,5 +1,5 @@
 # File: mini_insta/admin.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025
 # Description: File to handle the mini_insta application admin
 
 from django.contrib import admin

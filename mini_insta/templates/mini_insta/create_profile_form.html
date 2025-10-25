@@ -1,0 +1,19 @@
+<!-- mini_insta/templates/mini_insta/create_profile_form.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
+<!-- Description: HTML template that renders the create profile page that shows
+ after... -->
+{% extends 'mini_insta/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Create Profile</h1>
+
+<!-- Create a profile form -->
+<form method="POST" action="{% url 'create_profile' %}">
+    {% csrf_token %}
+    {{form.as_table}}
+    {{new_user_form}}
+    <input type="submit" name="submit" value="Submit" />
+</form>
+
+{% endblock %}

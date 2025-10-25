@@ -1,5 +1,5 @@
 <!-- mini_insta/show_all.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
 <!-- Description: HTML template that displays a Post record and its Photos -->
 
 {% extends 'mini_insta/base.html' %}
@@ -18,17 +18,41 @@
     {% else %}
         <img src="{% static 'no_image_available.png' %}"/>
     {% endif %}
+
     <div>
         <p>Liked by {{post.get_likes|length}}</p>
         <p>{{post.caption}}</p>
+        <!-- Display all comments related to this Post. -->
         {% for comment in post.get_all_comments %}
             <p>@{{comment.profile.username}}: {{comment.text}}</p>
         {% endfor %}
         <p>{{post.timestamp}}</p>
+        
+        <!-- If this is the current user's post show them edit buttons -->
         {% if user == post.profile.user %}
             <a href="{% url 'update_post' post.pk %}">Update Post</a>
             <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
         {% endif %}
+
+        <div style="display: flex; gap: 5px; margin-left: auto;">
+            <!-- On a logged in user that isn't the post's creator, show
+             like and unlike buttons -->
+            {% if user.is_authenticated %}
+                {% if user != post.profile.user %}
+                    {% if liked_by %}
+                        <form method="POST" action="{% url 'delete_like' post.pk %}">
+                            {% csrf_token %}
+                            <button type="submit">Unlike</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{% url 'create_like' post.pk %}">
+                            {% csrf_token %}
+                            <button type="submit">Like</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

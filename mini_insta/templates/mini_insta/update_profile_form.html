@@ -1,5 +1,5 @@
 <!-- mini_insta/templates/mini_insta/update_profile_form.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
 <!-- Description: HTML template that renders the update profile form -->
 {% extends 'mini_insta/base.html' %}
 {% load static %}
@@ -7,11 +7,14 @@
 {% block content %}
 <h1>Update Profile</h1>
 
+<!-- Update profile form -->
 <form method="POST" action="{% url 'update_profile' %}">
     {% csrf_token %}
     {{form.as_table}}
     <input type="submit" name="submit" value="Update" />
 </form>
+
+<!-- Return to profile page -->
 <a href="{% url 'show_profile' profile.pk %}"><button>Cancel</button></a>
 
 {% endblock %}

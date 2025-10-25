@@ -1,12 +1,11 @@
-<!-- templates/mini_insta/logged_out.html -->
+<!-- mini_insta/templates/mini_insta/logged_out.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
+<!-- Description: HTML template that renders the logged out page -->
 {% extends 'mini_insta/base.html'%}
 
 {% block content %}
+<h1>You have successfully logged out of Mini Insta.</h1> <hr>
 
-<h1>You have successfully logged out of Mini Insta.</h1>
-
-<hr>
 <p>Want to login again?</p>
 <a href="{% url 'login' %}">Click here!</a>
-<!-- <a href="{% url 'register' %}">Register here</a> -->
 {% endblock %}

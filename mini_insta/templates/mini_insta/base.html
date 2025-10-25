@@ -1,5 +1,5 @@
 <!-- mini_insta/base.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/17/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
 <!-- Description: template that renders the base elements of mini_insta app -->
 
 {% load static %}
@@ -27,33 +27,38 @@
     </body>
     <hr size="1">
     <footer>
-        <!-- Show extra navigation buttons if looking at a user's profile -->
         <div style="display: flex; gap: 5px; align-items: top;">
-        {% if profile %}
+            <!-- Show extra navigation buttons if a user is logged in -->
             {% if user.is_authenticated %}
                 <a href="{% url 'show_feed' %}">Post Feed</a>    
                 <a href="{% url 'search' %}">Search</a>
+                <a href="{% url 'profile' %}">Profile</a>
+
+                <!-- If looking at the user's profile, let them make posts -->
                 {% if user == profile.user %}
                     <a href="{% url 'create_post' %}">Create a Post</a>
-                    <a href="{% url 'show_profile' profile.pk %}">Profile</a>
                 {% endif %}
-            {% endif %}
-        {% endif %}
-
-        <a href="{% url 'show_all_profiles' %}">Return to ListView</a>
-        <div style="display: flex; margin-left: auto;">
-            {% if user.is_authenticated %}
-                <form method="POST" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
             {% else %}
-                <form method="GET" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <button type="submit">Login</button>
-                </form>
+                <!-- If no user is logged in, show link to create a profile -->
+                <a href="{% url 'create_profile' %}">Create Profile</a>
             {% endif %}
-        </div>
+
+            <a href="{% url 'show_all_profiles' %}">Return to ListView</a>
+            <div style="display: flex; margin-left: auto;">
+                {% if user.is_authenticated %}
+                    <!-- If a user is logged in, show logout button -->
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                {% else %}
+                    <!-- If no user is logged in, show login button -->
+                    <form method="GET" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <button type="submit">Login</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
     </footer>
 </html>
