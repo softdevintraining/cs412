@@ -121,7 +121,7 @@ class VoterDetailView(DetailView):
         context = super().get_context_data()
 
         voter = self.get_object()
-        address = f"{voter.street_number} {voter.street_name} #{voter.apartment_number}, {voter.zip_code}" 
+        address = f"{voter.street_number} {voter.street_name} #{voter.apartment_number}, Newton, MA" 
 
         context["address"] = urllib.parse.quote(address, safe='')
         return context
