@@ -1,3 +1,7 @@
+# File: voter_analytics/models.py
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/31/2025
+# Description: File to define data models for the voter_analytics application
+
 from django.db import models
 
 # Create your models here.
@@ -18,12 +22,15 @@ class Voter(models.Model):
     apartment_number = models.IntegerField()
     zip_code = models.CharField()
 
+    # Dates
     date_of_birth = models.DateField()
     date_of_registration = models.DateField()
 
+    # Party and Precinct
     party_affiliation = models.CharField()
     precinct_number = models.IntegerField()
 
+    # Election Participation
     v20state = models.TextField()
     v21town = models.TextField()
     v21primary = models.TextField()
@@ -33,25 +40,30 @@ class Voter(models.Model):
     voter_score = models.IntegerField()
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}\'s Voter Registration, Registered: {self.date_of_registration}, Zip: {self.zip_code} Party: {self.party_affiliation}, Score: {self.voter_score}'
+        '''A function that returns a string representation of a Voter object'''
+        return f'''{self.first_name} {self.last_name}\'s Voter Registration, 
+        Registered: {self.date_of_registration}, Zip: {self.zip_code} 
+        Party: {self.party_affiliation}, Score: {self.voter_score}'''
 
 
 def load_data():
     '''Function to load data records from CSV file into the Django database.'''
 
-    ## very dangerous!
-    Voter.objects.all().delete()
+    # very dangerous!
+    # Voter.objects.all().delete()
 
     filename = 'newton_voters.csv'
-
     f = open(filename, 'r') # open the file in readmode
-
-    # discard headers:
     f.readline() # just skips first line of csv
 
+    # This for loop attempts to store as much data from the csv as possible
+    # adds records that do not cause any errors (empty fields, etc.)
+    # displays an error message when an issue occurs
     for line in f:
         try:
             fields = line.strip().split(',')
+
+            # defining a Voter object for current line in csv
             voter = Voter(
                 last_name = fields[1],
                 first_name = fields[2],
@@ -75,9 +87,8 @@ def load_data():
                 voter_score = fields[16],
             )
             voter.save()
-            print(voter)
 
         except:
             print("Something went wrong!")
             print(f"line={line}")
-    print(f"Created: {len(Voter.objects.all())} Results")
+    print(f"Created: {len(Voter.objects.all())} Results") # display added count

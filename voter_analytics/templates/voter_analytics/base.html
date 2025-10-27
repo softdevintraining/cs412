@@ -1,0 +1,23 @@
+<!-- voter_analytics/templates/voter_analytics/base.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/31/2025 -->
+<!-- Description: template to render base elements of voter_analytics app -->
+{% load static %}
+<html>
+    <head>
+        <title>Voter Analytics</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+    </head>
+    <body>
+        <header>
+            <h1>Voter Analytics</h1>
+            <nav>
+                <li><a href="{% url 'show_all_voters' %}">Home</a></li>
+                <li><a href="{% url 'graphs' %}">Graphs</a></li>
+            </nav>
+        </header>
+    
+    {% block content %}
+    {% endblock %}    
+  
+    </body>
+</html>

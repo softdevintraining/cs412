@@ -7,5 +7,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    
+    path(r'', views.ShowVotersView.as_view(), name="show_all_voters"),
+    path(r'voters', views.ShowVotersView.as_view(), name="voter_list"),
+    path(r'voter/<int:pk>', views.VoterDetailView.as_view(), name="voter"),
+    path(r'graphs', views.ShowGraphsView.as_view(), name="graphs"),
 ]

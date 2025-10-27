@@ -1,0 +1,88 @@
+<!-- voter_analytics/templates/voter_analytics/search_graphs.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/31/2025 -->
+<!-- Description: HTML that renders the voter search feature for the
+ view that displays all graphs -->
+<h1>Search Graph Form</h1>
+ 
+ 
+<table>
+<form action="{% url 'graphs' %}">
+    <!-- Search by a Voter's party -->
+    <tr>
+        <th>Party Affiliation:</th>
+        <td>
+            <select name="party">
+                <option></option>
+                {% for party in parties %}
+                    <option value="{{party}}">{{party}}</option>
+                {% endfor %}
+            </select>
+        </td>
+    </tr>
+ 
+    <!-- Search by a Voter's year of birth -->
+    <tr>
+        <th>Minimum Year of Birth:</th>
+        <td>
+            <select name="min_dob" id="">
+                <option></option>
+            {% for year in dates %}
+                <option value="{{year}}">{{year}}</option>
+            {% endfor %}
+            </select>
+        </td>
+    </tr>
+ 
+    <tr>
+        <th>Maximum Year of Birth:</th>
+        <td>
+            <select name="max_dob" id="">
+                <option></option>
+            {% for year in dates %}
+                <option value="{{year}}">{{year}}</option>
+            {% endfor %}
+            </select>
+        </td>
+    </tr>
+ 
+    <!-- Search by a Voter's score (number of elections voted in) -->
+    <tr>
+        <th>Voter Score:</th>
+        <td>
+            <select name="score">
+            <option></option>
+            {% for score in scores %}
+                <option value="{{score}}">{{score}}</option>
+            {% endfor %}
+            
+            </select>
+        </td>
+    </tr>
+ 
+    <tr>
+        <th>Elections participated in:</th>
+        <td>
+            <input type="checkbox" id="v20state" name="v20state" value="TRUE">
+            <label for="v20state">v20 State Election</label><br>
+
+            <input type="checkbox" id="v21town" name="v21town" value="TRUE">
+            <label for="v21town">v21 Town Election</label><br>
+
+            <input type="checkbox" id="v21primary" name="v21primary" value="TRUE">
+            <label for="v21primary">v21 Primary Election</label><br>
+
+            <input type="checkbox" id="v22general" name="v22general" value="TRUE">
+            <label for="v22general">v22 General Election</label><br>
+
+            <input type="checkbox" id="v23town" name="v23town" value="TRUE">
+            <label for="23town">v23 Town Election</label><br>
+        </td>
+    </tr>
+    
+    <tr>
+        <td><input type="submit"></td>
+        <td></td>
+    </tr>
+    
+</form>
+</table>

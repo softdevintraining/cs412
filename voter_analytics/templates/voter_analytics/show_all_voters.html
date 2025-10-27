@@ -1,0 +1,52 @@
+<!-- voter_analytics/templates/voter_analytics/base.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/31/2025 -->
+<!-- Description: template that renders a table showing all Voters that are in
+ context, as determined by the search form -->
+{% extends 'voter_analytics/base.html' %}
+
+{% block content %}
+
+<!-- Displays the search form at the top of the page -->
+<div class="row">
+    {% include "voter_analytics/search.html" %}
+</div>
+
+<!-- Table container for the Voters -->
+<div class="container">
+    <!-- Header row -->
+    <div class="row">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Street Number</th>
+                <th>Street Name</th>
+                <th>Apartment Number</th>
+                <th>Zip Code</th>
+
+                <th>Date of Birth</th>
+                <th>Date of Registration</th>
+                <th>Party Affiliation</th>
+                <th>Precinct Number</th>
+            </tr>
+            
+            <!-- Voter information -->
+            {% for voter in voters %}
+            <tr>
+                <td><a href="{% url 'voter' voter.pk %}">{{voter.first_name}} {{voter.last_name}}</a></td>
+                <td>{{voter.street_number}}</td>
+                <td>{{voter.street_name}}</td>
+                <td>{{voter.apartment_number}}</td>
+                <td>{{voter.zip_code}}</td>
+                
+                <td>{{voter.date_of_birth}}</td>
+                <td>{{voter.date_of_registration}}</td>
+                <td>{{voter.party_affiliation}}</td>
+                <td>{{voter.precinct_number}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+ 
+ 
+</div>    
+{% endblock %}

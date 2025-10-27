@@ -1,0 +1,65 @@
+<!-- templates/voter_analytics/voter_detail.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/31/2025 -->
+<!-- Description: template that renders a table showing the information of one
+ Voter -->
+{% extends 'voter_analytics/base.html' %}
+ 
+{% block content %}
+
+<!-- Table container for the Voters -->
+<div class="container">
+    <h1>Showing Result for {{voter.first_name}} {{voter.last_name}}</h1>
+    <table>
+    <!-- Header row -->
+        <tr>
+            <th>Name</th>
+            <th>Street Number</th>
+            <th>Street Name</th>
+            <th>Apartment Number</th>
+            <th>Zip Code</th>
+
+            <th>Date of Birth</th>
+            <th>Date of Registration</th>
+            <th>Party Affiliation</th>
+            <th>Precinct Number</th>
+
+            <th>V20 State</th>
+            <th>V21 Town</th>
+            <th>V21 Primary</th>
+            <th>V22 General</th>
+            <th>V23 Town</th>
+
+            <th>Voter Score</th>
+        </tr>
+        
+        <!-- Voter information -->
+        <tr>
+            <td>{{voter.first_name}} {{voter.last_name}}</td>
+            <td>{{voter.street_number}}</td>
+            <td>{{voter.street_name}}</td>
+            <td>{{voter.apartment_number}}</td>
+            
+            <td>{{voter.zip_code}}</td>
+            <td>{{voter.date_of_birth}}</td>
+            <td>{{voter.date_of_registration}}</td>
+            <td>{{voter.party_affiliation}}</td>
+            <td>{{voter.precinct_number}}</td>
+
+            <td>{{voter.v20state}}</td>
+            <td>{{voter.v21town}}</td>
+            <td>{{voter.v21primary}}</td>
+            <td>{{voter.v22general}}</td>
+            <td>{{voter.v23town}}</td>
+
+            <td>{{voter.voter_score}}</td>
+        </tr>
+    </table>
+</div>
+
+<!-- A link to the Voter's addres via google maps -->
+<div>
+    <a href="https://www.google.com/maps/search/?api=1&parameters&query={{address}}">
+        Link to Address
+    </a>
+</div>
+{% endblock %}
