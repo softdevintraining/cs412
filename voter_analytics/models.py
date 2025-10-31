@@ -9,7 +9,6 @@ from django.db import models
 class Voter(models.Model):
     '''
     Store/represent the data from one voter in Massachusetts.
-
     '''
 
     # Voter Name

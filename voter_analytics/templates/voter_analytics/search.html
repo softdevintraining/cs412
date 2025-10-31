@@ -2,30 +2,39 @@
 <!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/31/2025 -->
 <!-- Description: HTML that renders the voter search feature for the
  view that displays all voters -->
-<h1>Search Form</h1>
+<h2>Search Form</h2>
  
  
 <table>
 <form action="{% url 'voter_list' %}">
-    <!-- Search by a Voter's party -->
     <tr>
         <th>Party Affiliation:</th>
         <td>
             <select name="party">
-                <option></option>
+                {% if party_filter %}
+                    <option value="{{party_filter}}">{{party_filter}}</option>
+                {% else %}
+                    <option></option>
+                {% endif %}
+
                 {% for party in parties %}
                     <option value="{{party}}">{{party}}</option>
                 {% endfor %}
             </select>
         </td>
     </tr>
-
+ 
     <!-- Search by a Voter's year of birth -->
     <tr>
-        <th>Minimum Date of Birth:</th>
+        <th>Minimum Year of Birth</th>
         <td>
             <select name="min_dob" id="">
+            {% if min_year_filter %}
+                <option value="{{min_year_filter}}">{{min_year_filter}}</option>
+            {% else %}
                 <option></option>
+            {% endif %}
+
             {% for year in dates %}
                 <option value="{{year}}">{{year}}</option>
             {% endfor %}
@@ -34,23 +43,33 @@
     </tr>
  
     <tr>
-        <th>Maximum Date of Birth:</th>
+        <th>Maximum Year of Birth:</th>
         <td>
             <select name="max_dob" id="">
+            {% if max_year_filter %}
+                <option value="{{max_year_filter}}">{{max_year_filter}}</option>
+            {% else %}
                 <option></option>
+            {% endif %}
+            
             {% for year in dates %}
                 <option value="{{year}}">{{year}}</option>
             {% endfor %}
             </select>
         </td>
     </tr>
-
+ 
     <!-- Search by a Voter's score (number of elections voted in) -->
     <tr>
         <th>Voter Score:</th>
         <td>
             <select name="score">
-            <option></option>
+            {% if score_filter %}
+                <option value="{{score_filter}}">{{score_filter}}</option>
+            {% else %}
+                <option></option>
+            {% endif %}
+
             {% for score in scores %}
                 <option value="{{score}}">{{score}}</option>
             {% endfor %}
@@ -58,23 +77,43 @@
             </select>
         </td>
     </tr>
-
+ 
     <tr>
         <th>Elections participated in:</th>
         <td>
-            <input type="checkbox" id="v20state" name="v20state" value="TRUE">
+            {% if v20state_filter %}
+                <input type="checkbox" id="v20state" name="v20state" value="TRUE" checked>
+            {% else %}
+                <input type="checkbox" id="v20state" name="v20state" value="TRUE">
+            {% endif %}
             <label for="v20state">v20 State Election</label><br>
 
-            <input type="checkbox" id="v21town" name="v21town" value="TRUE">
+            {% if v21town_filter %}
+                <input type="checkbox" id="v21town" name="v21town" value="TRUE" checked>
+            {% else %}
+                <input type="checkbox" id="v21town" name="v21town" value="TRUE">
+            {%endif%}
             <label for="v21town">v21 Town Election</label><br>
 
-            <input type="checkbox" id="v21primary" name="v21primary" value="TRUE">
+            {% if v21primary_filter %}
+                <input type="checkbox" id="v21primary" name="v21primary" value="TRUE" checked>
+            {% else %}
+                <input type="checkbox" id="v21primary" name="v21primary" value="TRUE">
+            {% endif %}
             <label for="v21primary">v21 Primary Election</label><br>
 
-            <input type="checkbox" id="v22general" name="v22general" value="TRUE">
+            {% if v22general_filter %}
+                <input type="checkbox" id="v22general" name="v22general" value="TRUE" checked>
+            {% else %}
+                <input type="checkbox" id="v22general" name="v22general" value="TRUE">
+            {% endif %}
             <label for="v22general">v22 General Election</label><br>
 
-            <input type="checkbox" id="v23town" name="v23town" value="TRUE">
+            {% if v23town_filter %}
+                <input type="checkbox" id="v23town" name="v23town" value="TRUE" checked>
+            {% else %}
+                <input type="checkbox" id="v23town" name="v23town" value="TRUE">
+            {% endif %}
             <label for="23town">v23 Town Election</label><br>
         </td>
     </tr>
@@ -86,3 +125,4 @@
     
 </form>
 </table>
+<hr>

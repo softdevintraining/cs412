@@ -25,6 +25,8 @@ class ShowVotersView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
 
+        context.update(self.selected_filters())
+
         # creates a distinct QuerySet of all possible parties
         unique_parties = Voter.objects.values_list( 
             'party_affiliation', flat=True).distinct()
@@ -111,6 +113,62 @@ class ShowVotersView(ListView):
                 voters = voters.filter(v23town="TRUE")
 
         return voters
+    
+    def selected_filters(self):
+        '''Returns a dictionary containing the current filter values.'''
+        filters = {}
+
+        if 'party' in self.request.GET:
+            party_affiliation = self.request.GET['party']
+            if party_affiliation:
+                if (len(party_affiliation) != 2):
+                    filters['party_filter'] = (party_affiliation.strip()+" ")
+                else:
+                    filters['party_filter'] = party_affiliation
+
+        if 'min_dob' in self.request.GET:
+            min_year = self.request.GET['min_dob']
+            if min_year:
+                filters['min_year_filter'] = min_year
+
+        if 'max_dob' in self.request.GET:
+            max_year = self.request.GET['max_dob']
+            if max_year:
+                filters['max_year_filter'] = max_year
+
+        if 'score' in self.request.GET:
+            score = self.request.GET['score']            
+            if score:
+                filters['score_filter'] = score
+
+        if 'v20state' in self.request.GET:
+            voted = self.request.GET['v20state']
+            if voted == 'TRUE':
+                filters['v20state_filter'] = voted
+        
+        if 'v21town' in self.request.GET:
+            voted = self.request.GET['v21town']
+            if voted == 'TRUE':
+                filters['v21town_filter'] = voted
+        
+        if 'v21primary' in self.request.GET:
+            voted = self.request.GET['v21primary']
+            if voted == 'TRUE':
+                filters['v21primary_filter'] = voted
+        
+        if 'v22general' in self.request.GET:
+            voted = self.request.GET['v22general']
+            if voted == 'TRUE':
+                filters['v22general_filter'] = voted
+        
+        if 'v23town' in self.request.GET:
+            voted = self.request.GET['v23town']
+            if voted == 'TRUE':
+                filters['v23town_filter'] = voted
+
+        print(filters)
+
+        return filters
 
 class VoterDetailView(DetailView):
     model = Voter
@@ -139,6 +197,8 @@ class ShowGraphsView(ListView):
         '''Define the context for this view.'''
         context = super().get_context_data()
 
+        context.update(self.selected_filters())
+
         # grab voters in context, with searches applied if there is one
         voters = self.get_queryset() 
 
@@ -147,7 +207,7 @@ class ShowGraphsView(ListView):
 
         years = []
         num_born_this_year = []
-        
+
         # Define context variables for our search form
         unique_parties = Voter.objects.values_list('party_affiliation', flat=True).distinct()
         context["parties"] = unique_parties
@@ -218,6 +278,9 @@ class ShowGraphsView(ListView):
         fig = go.Bar(x=years, y=num_born_this_year)
         title_text = f'Voter distribution by Year of Birth n={num_objects}'
 
+        if num_objects == 0:
+            title_text += " (no data show as there are no voters that match the selection)"
+
         graph_year_distribution = plotly.offline.plot({"data": [fig],
                                                 "layout_title_text": title_text},
                                                 auto_open=False,
@@ -228,6 +291,9 @@ class ShowGraphsView(ListView):
         fig = go.Pie(labels=list(represented_parties), values=party_members)
         title_text = f'Voter distribution by Party Affiliation n={num_objects}'
 
+        if num_objects == 0:
+            title_text += " (no data show as there are no voters that match the selection)"
+
         graph_party_affiliation = plotly.offline.plot({"data": [fig],
                                                 "layout_title_text": title_text},
                                                 auto_open=False,
@@ -237,6 +303,9 @@ class ShowGraphsView(ListView):
 
         fig = go.Bar(x=election_labels, y=election_count)
         title_text = f'Vote Count by Election n={num_objects}'
+
+        if num_objects == 0:
+            title_text += " (no data shown as there are no voters that match the selection)"
 
         graph_election_count = plotly.offline.plot({"data": [fig],
                                                 "layout_title_text": title_text},
@@ -303,3 +372,59 @@ class ShowGraphsView(ListView):
                 voters = voters.filter(v23town="TRUE")
 
         return voters
+    
+    def selected_filters(self):
+        '''Returns a dictionary containing the current filter values.'''
+        filters = {}
+
+        if 'party' in self.request.GET:
+            party_affiliation = self.request.GET['party']
+            if party_affiliation:
+                if (len(party_affiliation) != 2):
+                    filters['party_filter'] = (party_affiliation.strip()+" ")
+                else:
+                    filters['party_filter'] = party_affiliation
+
+        if 'min_dob' in self.request.GET:
+            min_year = self.request.GET['min_dob']
+            if min_year:
+                filters['min_year_filter'] = min_year
+
+        if 'max_dob' in self.request.GET:
+            max_year = self.request.GET['max_dob']
+            if max_year:
+                filters['max_year_filter'] = max_year
+
+        if 'score' in self.request.GET:
+            score = self.request.GET['score']            
+            if score:
+                filters['score_filter'] = score
+
+        if 'v20state' in self.request.GET:
+            voted = self.request.GET['v20state']
+            if voted == 'TRUE':
+                filters['v20state_filter'] = voted
+        
+        if 'v21town' in self.request.GET:
+            voted = self.request.GET['v21town']
+            if voted == 'TRUE':
+                filters['v21town_filter'] = voted
+        
+        if 'v21primary' in self.request.GET:
+            voted = self.request.GET['v21primary']
+            if voted == 'TRUE':
+                filters['v21primary_filter'] = voted
+        
+        if 'v22general' in self.request.GET:
+            voted = self.request.GET['v22general']
+            if voted == 'TRUE':
+                filters['v22general_filter'] = voted
+        
+        if 'v23town' in self.request.GET:
+            voted = self.request.GET['v23town']
+            if voted == 'TRUE':
+                filters['v23town_filter'] = voted
+
+        print(filters)
+
+        return filters
