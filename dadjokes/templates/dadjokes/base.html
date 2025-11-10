@@ -1,0 +1,29 @@
+<!-- File: dadjokes/templates/dadjokes/base.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/9/2025 -->
+<!-- Description: HTML template that renders the base elements of the 
+ dad jokes website -->
+
+{% load static %} 
+<html>
+    <head>
+        <title>Dadjokes: The Dad Joke Website</title>
+
+        <!-- Apply css styling from quotes-styles.css -->
+        <link rel="stylesheet" href="{% static 'quotes-styles.css' %}">
+    </head>
+    <body>
+        <h1>Dadjokes: The Dad Joke Website</h1>
+        <nav>
+            <li><a href="{% url 'random' %}">Home</a></li>
+            <li><a href="{% url 'jokes' %}">All Jokes</a></li>
+            <li><a href="{% url 'pictures' %}">All Pictures</a></li>
+        </nav>
+
+    {% block content %}
+    {% endblock %}
+    </body>
+    <footer>
+        <!-- The current time is {{time}}. <br> -->
+        This page was created by Oluwatimilehin Akibu (akilu@bu.edu).
+    </footer>
+</html>

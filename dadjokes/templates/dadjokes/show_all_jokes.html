@@ -1,0 +1,15 @@
+<!-- File: dadjokes/templates/dadjokes/random.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/15/2025 -->
+<!-- Description: HTML template that extends the base elements of the 
+ dadjokes app and renders a random joke and picture. -->
+ 
+{% extends 'dadjokes/base.html' %}
+{% load static %}
+
+{% block content %}
+    {% for joke in jokes %}
+        <p>{{joke.text}}</p>
+        <p>{{joke.name}}</p>
+        <!-- <p>This is a site for the quote of the day.</p> -->
+    {% endfor %}
+{% endblock %}

@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'mini_insta', # Assignment 3 app
     'marathon_analytics', # Example 8 app
     'voter_analytics', # Assignment 8 app
+    'dadjokes', # Assignment 10 app
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +149,11 @@ CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
 if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     STATIC_URL = '/akilu/static/'
     MEDIA_URL = '/akilu/media/'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

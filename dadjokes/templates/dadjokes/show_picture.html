@@ -1,0 +1,11 @@
+<!-- File: dadjokes/templates/dadjokes/show_picture.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/15/2025 -->
+<!-- Description: HTML template that extends the base elements of the 
+ dadjokes app and renders a picture. -->
+ 
+{% extends 'dadjokes/base.html' %}
+{% load static %}
+
+{% block content %}
+    <img src="{{picture.image_url}}">
+{% endblock %}
