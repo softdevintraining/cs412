@@ -8,20 +8,28 @@ from rest_framework import generics
 class JokeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Joke
-        fields = ['text', 'name']
+        fields = ['id', 'text', 'name']
 
 class PictureSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Picture
-        fields = ['image_url']
+        fields = ['id', 'image_url']
 
 # APIViews to define the view behavior
 class RandomAPIView(generics.ListAPIView):
     jokes = Joke.objects.all()
-    joke = jokes.filter(pk=random.randint(0, len(jokes) -1))
-
-    queryset = joke
     serializer_class = JokeSerializer
+
+    def get_queryset(self):
+        rand = random.randint(0, len(self.jokes) -1)
+        return self.jokes.filter(pk=rand)
+    
+class RandomPictureAPIView(generics.ListAPIView):
+    pictures = Picture.objects.all()
+    serializer_class = PictureSerializer
+    def get_queryset(self):
+        rand = random.randint(0, len(self.jokes) -1)
+        return self.pictures.filter(pk=rand)
 
 class AllJokesAPIView(generics.ListCreateAPIView):
     queryset = Joke.objects.all()
@@ -55,5 +63,6 @@ urlpatterns = [
     path('api/jokes', AllJokesAPIView.as_view()),
     path('api/pictures', AllPicturesAPIView.as_view()),
     path('api/joke/<int:pk>', JokeAPIView.as_view()),
-    path('api/picture/<int:pk>', PictureAPIView.as_view())
+    path('api/picture/<int:pk>', PictureAPIView.as_view()),
+    path('api/random_picture', RandomPictureAPIView.as_view()),
 ]
