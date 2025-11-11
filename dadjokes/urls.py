@@ -28,7 +28,7 @@ class RandomPictureAPIView(generics.ListAPIView):
     pictures = Picture.objects.all()
     serializer_class = PictureSerializer
     def get_queryset(self):
-        rand = random.randint(0, len(self.jokes) -1)
+        rand = random.randint(0, len(self.pictures) -1)
         return self.pictures.filter(pk=rand)
 
 class AllJokesAPIView(generics.ListCreateAPIView):
