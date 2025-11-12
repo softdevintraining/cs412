@@ -2,7 +2,7 @@
 from django.urls import path, include
 from .views import *
 from rest_framework import routers, serializers, viewsets
-from rest_framework import generics
+from rest_framework import generics, permissions
 
 # API serializers to define the API representation
 class JokeSerializer(serializers.HyperlinkedModelSerializer):
@@ -34,6 +34,7 @@ class RandomPictureAPIView(generics.ListAPIView):
 class AllJokesAPIView(generics.ListCreateAPIView):
     queryset = Joke.objects.all()
     serializer_class = JokeSerializer
+    permission_classes = (permissions.AllowAny,)
 
 class JokeAPIView(generics.RetrieveAPIView):
     jokes = Joke.objects.all()
