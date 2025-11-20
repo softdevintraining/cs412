@@ -1,0 +1,20 @@
+<!-- project/show_all_songs.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/20/2025 -->
+<!-- Description: HTML template that renders the page that shows all Profile
+ records. -->
+{% extends 'project/base.html' %}
+
+{% block content %}
+<!-- creates a table to store the profiles in -->
+<main class="grid-container">
+    <!-- for loop to load each profile stored in the mini_insta database -->
+    {% for song in songs %}
+    <div>
+        <p>{{song.name}}</p>
+        <audio controls>
+            <source src="{{song.audio_file.url}}" type="audio/wav">
+        </audio>
+    </div>
+    {%endfor%}
+</main>
+{% endblock %}

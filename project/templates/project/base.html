@@ -1,0 +1,19 @@
+<!-- project/base.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/20/2025 -->
+<!-- Description: template that renders the base elements of project app -->
+
+{% load static %}
+
+<html>
+    <head>
+        <title>Project</title>
+        <link rel="stylesheet" href="{% static 'mini_insta-styles.css' %}">
+    </head>
+    <body>
+        <p>Hey!</p>
+
+        {% block content %}
+
+        {% endblock %}
+    </body>
+</html>

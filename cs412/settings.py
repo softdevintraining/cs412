@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'voter_analytics', # Assignment 8 app
     'dadjokes', # Assignment 10 app
     'rest_framework',
+    'project', # Final Project
 ]
 
 MIDDLEWARE = [
