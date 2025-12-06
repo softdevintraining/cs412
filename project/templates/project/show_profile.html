@@ -1,0 +1,42 @@
+<!-- project/show_profile.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/20/2025 -->
+<!-- Description: HTML template to show the DetailView of one Profile -->
+{% extends 'project/base.html' %}
+
+{% block content %}
+<!-- creates a table to store the profiles in -->
+<div>
+    <h3>{{profile.display_name}}'s Profile</h3>
+    <img src="{{profile.profile_image_url}}" alt="profile image"/>
+    {% if user_profile %}
+        <form method="POST" action="{% url 'show_profile' profile.pk %}">
+            {% csrf_token %}
+            {% if followed_by %}
+                <input type="submit" value="Unfollow">
+            {% else %}
+                <input type="submit" value="Follow">
+            {% endif %}
+        </form>
+    {% endif %}
+    <h4>{{profile.username}}</h4>
+
+    <p>{{profile.bio_text}}</p>
+
+    <h4>Tracks</h4>
+    <main class="grid-container">
+        {% for song in profile.get_songs %}
+        <div>
+            <a href="{% url 'show_song' song.pk %}"><img src="{{song.profile.profile_image_url}}"/></a>
+            <p>{{song.name}}</p>
+            {% if song.audio_file %}
+                <audio controls>
+                    <source src="{{song.audio_file.url}}" type="audio/wav">
+                </audio>
+            {% else %}
+                <p>No audio.</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </main>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!-- project/templates/project/create_profile_form.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/23/2025 -->
+<!-- Description: HTML template that renders the create post page that shows
+ after clicking the create a post button on some profile. -->
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Create a new Profile</h1>
+
+<!-- Create a post form -->
+<form method="POST" action="{% url 'create_profile' %}"
+    enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_table}}
+    {{new_user_form}}
+    <br>
+    <input type="submit" name="submit" value="Create Account" />
+</form>
+
+<!--Cancel button to be added here.-->
+
+{% endblock %}

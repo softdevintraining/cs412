@@ -10,10 +10,17 @@
     <!-- for loop to load each profile stored in the mini_insta database -->
     {% for song in songs %}
     <div>
+        <a href="{% url 'show_song' song.pk %}">
         <p>{{song.name}}</p>
-        <audio controls>
-            <source src="{{song.audio_file.url}}" type="audio/wav">
-        </audio>
+        </a>
+
+        {% if song.audio_file %}
+            <audio controls>
+                <source src="{{song.audio_file.url}}" type="audio/wav">
+            </audio>
+        {% else %}
+            <p>No audio.</p>
+        {% endif %}
     </div>
     {%endfor%}
 </main>

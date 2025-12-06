@@ -1,0 +1,27 @@
+<div style="margin: 0; width: 100%; background-color: white;">
+    <div style="display: flex; gap: 10px; ">
+        <a href="{% url 'landing_page' %}"><p style="color: black;">Landing Page</p></a>
+        <a href="{% url 'all_songs' %}"><p style="color: black;">All Songs</p></a>
+        <span style="margin-left: auto; display: flex; gap: 10px">
+            <form style="display: flex; margin:auto" method="GET" action="{% url 'search' %}" >
+                {% csrf_token %}
+                <input type="text" name="query" placeholder="Search for something..."/>
+                <input type="submit" name="submit" value="Search" />
+            </form>
+        {% if user.is_authenticated %}
+            <a href="{% url 'show_profile' user_profile.pk %}"><p style="color: black;">Your Profile</p></a>
+            <a href="{% url 'show_feed' %}"><p style="color: black;">Feed</p></a>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <form style="margin: 0; display: flex; align-items: center;"action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Logout">
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}"><p style="color: black;">Login</p></a>
+            <a href="{% url 'create_profile' %}"><p style="color: black;">Sign Up</p></a>
+        {% endif %}
+        </span>
+        
+    </div>
+</div>

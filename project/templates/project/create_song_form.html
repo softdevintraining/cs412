@@ -1,0 +1,25 @@
+<!-- project/templates/project/create_song_form.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
+<!-- Description: HTML template that renders the create post page that shows
+ after clicking the create a post button on some profile. -->
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Upload a new Song</h1>
+
+<!-- Create a post form -->
+<form method="POST" action="{% url 'create_song' %}"
+    enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_table}}
+
+    <!-- form field for a music file like mp3/wav -->
+    <input type="file" name="file" /> <br>
+    <br>
+    <input type="submit" name="submit" value="Upload" />
+</form>
+
+<!-- Add in a cancel button that links back to the profile page-->
+
+{% endblock %}

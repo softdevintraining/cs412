@@ -1,0 +1,22 @@
+<!-- project/templates/project/update_song_form.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/24/2025 -->
+<!-- Description: HTML template that renders the update song form -->
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Update Song</h1>
+
+<!-- Update post form -->
+<form method="POST" action="{% url 'update_song' song.pk %}">
+    {% csrf_token %}
+    {{form.as_p}} <br>
+    <input type="submit" name="submit" value="Update" />
+</form>
+
+<!-- Return to post page -->
+<form method="GET" action="{% url 'show_song' song.pk %}">
+    <input type="submit" name="submit" value="Cancel" />
+</form>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+<!-- project/templates/project/landing_page.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/23/2025 -->
+<!-- Description: HTML template that renders the landing page -->
+{% extends 'project/base.html'%}
+
+{% block content %}
+
+<h1>Project NAME</h1>
+<h4>This is an online audio streaming service. By me, olu.</h4>
+<hr>
+
+<main class="grid-container">
+    <!-- for loop to load each profile stored in the mini_insta database -->
+    {% for profile in profiles %}
+    <div>
+        <a href="{% url 'show_profile' profile.pk %}">
+        <img src="{{profile.profile_image_url}}" alt="profile image"/>
+        <p>{{profile.username}}</p>
+        <p>{{profile.bio_text}}</p>
+        </a>
+    </div>
+    {%endfor%}
+</main>
+{% endblock %}

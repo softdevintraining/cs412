@@ -1,0 +1,44 @@
+<!-- project/templates/project/search_results.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/5/2025 -->
+<!-- Description: HTML template that renders the results of search -->
+{% extends 'project/base.html' %}
+{% load static %}
+
+{% block content %}
+<h3>Profiles matching the query for "{{query}}" </h3>
+<main class="grid-container">
+    <!-- for loop to load each profile that matches the query -->
+    {% for profile in profiles %}
+    <div class="profile">
+        <div>
+            <h2>@{{profile.username}}</h2>
+            <h3>{{profile.display_name}}</h3>
+        </div>
+        <a href="{% url 'show_profile' profile.pk %}">
+        <img src="{{profile.profile_image_url}}">
+        </a>
+    </div>
+    {%endfor%}
+</main>
+<h3>Songs matching the query for "{{query}}" </h3>
+
+<!-- for loop to load each post that matches the query -->
+{% for song in songs %}
+    <div class="post-container">
+        <p>@{{song.profile.username}}</p>
+        <img style="width: 100px;" src="{{song.profile.profile_image_url}}" />
+        <a href="{% url 'show_song' song.pk %}">
+            {% if song.image_url %}
+                <img src="{{song.image_url}}" />
+            {% else %}
+                <img src="{% static 'no_image_available.png' %}"/>
+            {% endif %}
+            <div>
+                <p>{{song.name}}</p>
+                <p>{{song.description}}</p>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+
+{% endblock %}

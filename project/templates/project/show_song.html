@@ -1,0 +1,60 @@
+<!-- project/show_song.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/20/2025 -->
+<!-- Description: HTML template to show the DetailView of one Song -->
+{% extends 'project/base.html' %}
+
+{% block content %}
+<!-- creates a table to store the profiles in -->
+<main class="grid-container">
+    <!-- for loop to load each profile stored in the mini_insta database -->
+    <div>
+        <p>{{song.name}} by <a href="{% url 'show_profile' song.profile.pk %}">@{{song.profile.username}}</a></p>
+        {% if song.audio_file %}
+            <audio controls>
+                <source src="{{song.audio_file.url}}" type="audio/wav">
+            </audio>
+        {% else %}
+            <p>No audio.</p>
+        {% endif %}
+    </div>
+    <br>
+    
+</main>
+{% if user.is_authenticated %}
+    {% if liked_by%}
+        <form method="POST" action="{% url 'delete_like' song.pk %}">
+            {% csrf_token %}
+            <button type="submit">Unlike</button>
+        </form>
+    {% else %}
+        <form method="POST" action="{% url 'create_like' song.pk %}">
+            {% csrf_token %}
+            <button type="submit">Like</button>
+        </form>
+    {% endif %}
+{%endif%}
+<h4>Comments:</h4>
+{% for comment in song.get_comments %}
+    <p>@{{comment.profile.username}}: {{comment.text}}</p>
+    {% if user.is_authenticated %}
+        {% if comment.profile == user_profile %}
+            <form method="POST" action="{% url 'delete_comment' comment.pk %}">
+                {% csrf_token %}
+                <input hidden name="form_text" value="{{comment.text}}">
+                <input hidden name="song_profile_user" value="{{comment.song.profile.username}}">
+                <input hidden name="song_name" value="{{comment.song.name}}">
+                <input type="submit" value="Delete">
+            </form>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+<form method="POST" action="{% url 'comment' song.pk%}">
+    {% csrf_token %}
+    <h5>Add a comment: </h5>
+    {{form.as_p}}
+    <input type="submit">
+</form>
+
+
+{% endblock %}
