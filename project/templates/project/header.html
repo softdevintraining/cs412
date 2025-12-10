@@ -5,7 +5,6 @@
 <div style="background-color: #121212; margin: 0; width: 100%; color: #3f3f3f; border-bottom: solid 2px">
     <div style="display: flex; gap: 10px; padding: 0px 5px; ">
         <a href="{% url 'landing_page' %}"><p style="color: #717171;">Landing Page</p></a>
-        <a href="{% url 'all_songs' %}"><p style="color: #717171">All Songs</p></a>
         
         <!-- If a user is logged in, show their display name in the header -->
         {% if user.is_authenticated %}

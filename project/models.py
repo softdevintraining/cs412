@@ -63,8 +63,8 @@ class Profile(models.Model):
     def get_song_feed(self):
         '''Returns the posts that should appear in this Profile's feed.'''
         profiles = []
-        for follow in self.get_following():
-            profiles.append(follow.followed)
+        for profile in self.get_following():
+            profiles.append(profile)
 
         # profiles = Profile.objects.filter(username__in=usernames)
         song_feed = Song.objects.filter(profile__in=profiles)

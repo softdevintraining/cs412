@@ -7,6 +7,7 @@
 
 {% block content %}
 <!-- Displays song in the Profile's feed -->
+<div class="add-left-space">
 {% for song in user_profile.get_song_feed %}
         <a href="{% url 'show_song' song.pk %}">
         <p>{{song.name}} by <a href="{% url 'show_profile' song.profile.pk %}">@{{song.profile.username}}</a></p>
@@ -22,4 +23,5 @@
             {% endif %}
         </a>
 {% endfor %}
+</div>
 {% endblock %}

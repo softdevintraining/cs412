@@ -88,6 +88,7 @@
         </div>
     {% endfor %}
 
+    {% if user.is_authenticated %}
     <!-- Comment submission form -->
     <form style=" border-top: solid 2px #717171;" method="POST" action="{% url 'comment' song.pk%}">
         {% csrf_token %}
@@ -96,6 +97,7 @@
         <input style="height: 25px; color: #717171; background-color: inherit; font-family: inherit;"
         type="submit" value="Comment!">
     </form>
+    {% endif %}
     </div>
 </div>
 {% endblock %}
