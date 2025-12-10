@@ -1,18 +1,18 @@
-<!-- project/show_feed.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/30/2025 -->
+<!-- project/templates/project/show_feed.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
 <!-- Description: HTML template that renders the page that shows a Profile's
  feed of Songs. -->
 {% extends 'project/base.html' %}
 {% load static %}
 
 {% block content %}
-<!-- displays each post in the Profile's feed -->
-<hr/>
-{% for song in profile.get_song_feed %}
-    <div class="post-container">
+<!-- Displays song in the Profile's feed -->
+{% for song in user_profile.get_song_feed %}
         <a href="{% url 'show_song' song.pk %}">
         <p>{{song.name}} by <a href="{% url 'show_profile' song.profile.pk %}">@{{song.profile.username}}</a></p>
             <img style="width: 100px;" src="{{song.profile.profile_image_url}}" />
+            
+            <!--If the song has no audio, show text -->
             {% if song.audio_file %}
                 <audio controls>
                     <source src="{{song.audio_file.url}}" type="audio/wav">
@@ -21,6 +21,5 @@
                 <p>No audio.</p>
             {% endif %}
         </a>
-    </div>
 {% endfor %}
 {% endblock %}

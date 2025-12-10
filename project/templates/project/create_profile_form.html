@@ -1,23 +1,27 @@
 <!-- project/templates/project/create_profile_form.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/23/2025 -->
-<!-- Description: HTML template that renders the create post page that shows
- after clicking the create a post button on some profile. -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
+<!-- Description: HTML template that renders the create profile page that shows
+ after clicking the sign up button on my header. -->
 {% extends 'project/base.html' %}
 {% load static %}
 
 {% block content %}
-<h1>Create a new Profile</h1>
+<div class="add-left-space">
+    <h1>Sign up a new Profile</h1>
 
-<!-- Create a post form -->
-<form method="POST" action="{% url 'create_profile' %}"
+    <!-- Create a profile form -->
+    <form method="POST" action="{% url 'create_profile' %}"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        {{new_user_form}}
+        <br>
+        <input class="dark-button" type="submit" name="submit" value="Sign up" />
+    </form>
+
+    <form method="GET" action="{% url 'landing_page' %}"
     enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_table}}
-    {{new_user_form}}
-    <br>
-    <input type="submit" name="submit" value="Create Account" />
-</form>
-
-<!--Cancel button to be added here.-->
-
+        <input class="dark-button" type="submit" name="cancel" value="Cancel" />
+    </form>
+</div>
 {% endblock %}

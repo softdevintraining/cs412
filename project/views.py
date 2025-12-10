@@ -15,31 +15,33 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin ## for auth
 from django.contrib.auth.forms import UserCreationForm # for creating a new user
 
-# from .forms import CreateProfileForm, CreatePostForm, CreateFollowForm, UpdateProfileForm, UpdatePostForm
-# from django.urls import reverse
-# from django.http import HttpResponse, HttpResponseRedirect
-# from django.contrib.auth import login
-# from django.contrib.auth.mixins import LoginRequiredMixin ## for auth
-# from django.contrib.auth.forms import UserCreationForm # for creating a new user
-
 # Create your views here.
 class RequireLogin():
+    '''Helper class to define some auth-related functionality'''
+    
     def get_login_url(self):
+        '''Return the URL corresponding to my app's login page'''
         return reverse('login')
     
     def get_object(self):
+        '''Returns the profile of currently authenticated user
+            if there is one'''
         user = self.request.user
         profile = Profile.objects.get(user=user)
         return profile
 
 class LandingPageView(TemplateView):
+    '''Defines a view to display the landing page, which shows all Profiles'''
     template_name = "project/landing_page.html" 
 
     def get_context_data(self, **kwargs):
+        '''Define context of this view'''
         context = super().get_context_data(**kwargs)
-        context['profiles'] = Profile.objects.all()
         
-        if (self.request.user.is_authenticated):
+        # puts all Profile objects in context
+        context['profiles'] = Profile.objects.all() 
+        if (self.request.user.is_authenticated): 
+            # stores profile of currently authenticated user
             context['user_profile'] = Profile.objects.get(user=self.request.user)
 
         return context
@@ -51,9 +53,10 @@ class SongsListView(ListView):
     context_object_name = "songs"
 
     def get_context_data(self, **kwargs):
+        '''Grabbing context for this detail view'''
         context = super().get_context_data(**kwargs)
-        print(self.request.user.is_authenticated)
         if (self.request.user.is_authenticated):
+            # stores profile of currently authenticated user
             context['user_profile'] = Profile.objects.get(user=self.request.user)
 
         return context
@@ -67,9 +70,9 @@ class SongDetailView(DetailView):
     def get_context_data(self, **kwargs):
         '''Grabbing context for this detail view'''
         context = super().get_context_data()
-        song = Song.objects.get(pk=self.kwargs['pk'])
-        profile = song.profile
-        form = CreateCommentForm()
+        song = Song.objects.get(pk=self.kwargs['pk']) # store current song
+        profile = song.profile # grab profile of currently displayed song
+        form = CreateCommentForm() # create an instace of the CreateCommentForm
 
         # check if current user likes the post being viewed
         if (self.request.user.is_authenticated): 
@@ -82,16 +85,18 @@ class SongDetailView(DetailView):
             else:
                 context['show_buttons'] = False
 
-        context['profile'] = profile
-        context['form'] = form
+        context['profile'] = profile # store profile of current song
+        context['form'] = form # place comment form into context
         return context
 
     def post(self, request, *args, **kwargs):
-        pk = self.kwargs['pk']
-        song = Song.objects.get(pk=pk)
-        self.object = song
+        pk = self.kwargs['pk'] # Grab primary key of song
+        song = Song.objects.get(pk=pk) # Use it to grab current song
+        self.object = song # set the object of the view to the song
 
         if (self.request.user.is_authenticated):
+            # When a user is logged in and makes a POST to this view...
+            # Handle liking and unliking this song, with helper functions
             profile = Profile.objects.get(user=self.request.user)
             if (self.get_context_data()['liked_by'] == True):
                 self.remove_like(song, profile)
@@ -100,16 +105,16 @@ class SongDetailView(DetailView):
         else:
             print("No authenticated user")
     
-        # redirect to current post's page (consequence of post method)
+        # redirect to current song's page (consequence of post method)
         return HttpResponseRedirect(reverse('show_song', kwargs={'pk':pk}))
 
-    def add_like(self, song, profile):
-        if profile:
+    # Creates a new like corresponding to the argued profile and song
+    def add_like(self, song, profile):    
+        if profile: 
             like = Like()
             like.song = song
             like.profile = profile 
             like.save()
-            print('added like')
         else:
             print("could not add like, no profile")
 
@@ -130,24 +135,29 @@ class ProfileDetailView(DetailView):
     def get_context_data(self, **kwargs):
         '''Grabbing context for this detail view.'''
         context = super().get_context_data()
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
-        # self.object = profile
+        pk = self.kwargs['pk'] # Grab pk in URL
+        profile = Profile.objects.get(pk=pk) # Grab profile of this pk
 
+        # If a user is logged in, grab the user's profile
+        # Store the profile and whether this user's profile follows the 
+        # displayed profile in context
         if (self.request.user.is_authenticated):
             user_profile = Profile.objects.get(user=self.request.user)
             context['user_profile'] = user_profile
             context['followed_by'] = profile.is_follower(user_profile)
-            print(context['followed_by'])
 
-        context['profile'] = profile
+        context['profile'] = profile # Stored displayed profile in context
         return context
     
     def post(self, request, *args, **kwargs):
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=self.kwargs['pk'])
-        self.object = profile
+        '''Function to handle the view's behavior upon a POST request'''
+        # Grab profile of current pk in URL
+        profile = Profile.objects.get(pk=self.kwargs['pk']) 
+        self.object = profile # set the Profile as the view's context object
 
+        # If user is logged in:
+        # Grab their profile and handle following/unfollowing the 
+        # displayed profile (using helper functions)
         if (self.request.user.is_authenticated):
             user_profile = Profile.objects.get(user=self.request.user)
             if (self.get_context_data()['followed_by'] == True):
@@ -158,15 +168,16 @@ class ProfileDetailView(DetailView):
             print("No authenticated user")
     
         # redirect to current post's page (consequence of post method)
-        return HttpResponseRedirect(reverse('show_song', kwargs={'pk':pk}))
+        return HttpResponseRedirect(reverse('show_profile', kwargs={'pk':self.kwargs['pk']}))
 
+    # Creates a new Follow object in DB based on argued Profile objects
     def add_follow(self, followed, follower):
         follow = Follow()
         follow.followed = followed
         follow.followed_by = follower
         follow.save()
         
-    
+    # Removes a Follow object from DB based on argued Profiles
     def remove_follow(self, followed, followed_by): 
         follow = Follow.objects.get(followed=followed, followed_by=followed_by)
         follow.delete()
@@ -178,8 +189,11 @@ class ShowFeedView(RequireLogin, LoginRequiredMixin, ListView):
     context_object_name = "songs"
 
     def get_context_data(self, **kwargs):
+        '''Grabbing context for this view'''
         context = super().get_context_data(**kwargs)
-        if (self.request.user):
+        # If there is a user, set the user_profile variable to 
+        # this user's profile
+        if (self.request.user):    
             profile = self.get_object()
             context["user_profile"] = profile
 
@@ -191,15 +205,16 @@ class SearchView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         '''Overwrite dispatch method to handle template forwarding.'''
-        # if ('query' not in self.request.GET):
-            # self.template_name = "project/search.html"
         return super().dispatch(request, *args, **kwargs)
     
     def get_queryset(self):
         '''Overwrite queryset method to grab relevant Songs.'''
         query = None
         if ('query' in self.request.GET):
-            query = self.request.GET.get('query')
+            # Set query variable to value taken from form
+            query = self.request.GET.get('query') 
+            
+            # Grab Song objects based on the query
             return Song.objects.filter(name__contains=query)
         else:
             return []
@@ -207,16 +222,21 @@ class SearchView(ListView):
     def get_context_data(self):
         '''Overwrite get_context_data to define necessary context variables.'''
         context = super().get_context_data()
+        # If a user is logged in, place their profile in context
         if (self.request.user.is_authenticated):
             profile = self.get_object()
             context['user_profile'] = profile
         matching_songs = None
         matching_profiles = None
 
+        # Given some value for query
         if ('query' in self.request.GET):
             query = self.request.GET.get('query')
-            context['query'] = query
-            matching_songs = self.get_queryset()
+            context['query'] = query # place the query variable into context
+            
+            # Grab songs matching the query
+            matching_songs = self.get_queryset() 
+            # Grab profiles matching the query based on: username, display_name, and bio_text
             matching_profiles = list(Profile.objects.filter(username__contains=query))
             if matching_profiles != None:
                 for item in Profile.objects.filter(display_name__contains=query):
@@ -230,30 +250,38 @@ class SearchView(ListView):
                     else:
                         matching_profiles.append(item)
 
+        # Place matching songs and profiles into context
         context['songs'] = matching_songs
         context['profiles'] = matching_profiles
         return context
 
     def form_valid(self, form):
+        # Attach the authenticated user to this form
         user = self.request.user
         form.instance.user = user
         return super().form_valid(form)
     
     def get_object(self):
+        # Return profile of authenticated user
         user = self.request.user
         profile = Profile.objects.get(user=user)
         return profile
         
 class CreateProfileView(CreateView):
+    '''Define a view class to handle creating a Profile.'''
     model = Profile
     form_class = CreateProfileForm
     template_name = "project/create_profile_form.html"
 
     def get_context_data(self, **kwargs):
+        '''Grabbing context for this detail view'''
         context = super().get_context_data(**kwargs)
-        user_form = UserCreationForm()
+        
+        # Create a UserCreationForm and place it into context
+        user_form = UserCreationForm() 
         context['new_user_form'] = user_form
 
+        # If a user is logged in, place its profile into context
         if (self.request.user.is_authenticated):
             user_profile = Profile.objects.get(user=self.request.user)
             context['user_profile'] = user_profile
@@ -261,18 +289,22 @@ class CreateProfileView(CreateView):
         return context
     
     def form_valid(self, form):
+        '''Overwrite form valid method.'''
+        # Grab the UserCreationForm from the POST request and use it to
+        # create a new user
         user_form = UserCreationForm(self.request.POST)
         user = user_form.save()
-        print(user)
 
+        # Log the newly created user into the app
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
 
+        # Attach it to the form, delegate rest to superclass' form_valid()
         form.instance.user = user
 
         return super().form_valid(form)
 
 class CreateSongView(RequireLogin, LoginRequiredMixin, CreateView):
-    # model = Song
+    '''Define a view class to handle creating a Song.'''
     form_class = CreateSongForm
     template_name = "project/create_song_form.html"
 
@@ -283,41 +315,48 @@ class CreateSongView(RequireLogin, LoginRequiredMixin, CreateView):
     def get_context_data(self):
         '''Return the dictionary of context variables for use in the template.'''
         context = super().get_context_data()
-        profile = self.get_object()
+        profile = self.get_object() # Grab authenticated user's profile
 
-        context['user_profile'] = profile
+        context['user_profile'] = profile # Place that profile in context
         return context
 
     def form_valid(self, form):
         '''Overwrite form_valid method.'''
-        user = self.request.user
+        # Grab authenticated user and its profile
+        user = self.request.user 
         profile = self.get_object()
 
+        # Attach both to the form
         form.instance.profile = profile
         form.instance.user = user
 
+
         if (self.request.POST):
-            # create Photo objects and relate to them to created post
+            # Grab the audio file from the FILES attribute of the request
+            # Attach it to the form
             file = self.request.FILES.get('file')
             if (file):
                 form.instance.audio_file = file
 
+            # Save this new Song to the DB
             form.instance.save()
         
         return super().form_valid(form)
     
 class CreateCommentView(RequireLogin, CreateView):
+    '''A view to handle the creation of a new Comment.'''
     model = Comment
     form_class = CreateCommentForm
     
     def get_success_url(self):
+        '''Provide a URL to redirect to after creating a new Comment.'''
         return reverse('show_song', kwargs={'pk': Comment.objects.last().song.pk})
     
     def get_context_data(self):
         '''Return the dictionary of context variables for use in the template.'''
         context = super().get_context_data()
-        song = Song.objects.get(pk=self.kwargs['pk'])
-        profile = self.get_object()
+        song = Song.objects.get(pk=self.kwargs['pk']) # Grab song in context
+        profile = self.get_object() # Grab authenticated user's profile
 
         context['profile'] = profile
         context['song'] = song
@@ -325,14 +364,16 @@ class CreateCommentView(RequireLogin, CreateView):
     
     def form_valid(self, form):
         '''Overwrite form_valid method.'''
+        # Grab authenticated user and their profile
         user = self.request.user
         profile = self.get_object()
 
+        # Attach both to the profile as well as the song in context
         form.instance.user = user
         form.instance.profile = profile
         form.instance.song = self.get_context_data()['song']
         
-        return super().form_valid(form)
+        return super().form_valid(form) # Delegate rest to super class
 
 class DeleteCommentView(RequireLogin, TemplateView):
     model = Comment
@@ -341,77 +382,83 @@ class DeleteCommentView(RequireLogin, TemplateView):
     def get_context_data(self):
         '''Return the dictionary of context variables for use in the template.'''
         context = super().get_context_data()
-        # comment = Comment.objects.get(pk=self.kwargs['pk'])
-        # self.object = comment
+
+        # Grab necessary values from submitted form
+        # Use to grab the song and its profile
         song_name = self.request.POST['song_name']
         username = self.request.POST['song_profile_user']
-        song_profile = Profile.objects.get(username=username)
+        song_profile = Profile.objects.get(username=username) 
         text = self.request.POST.get('form_text')
         profile = self.get_object()
         song = Song.objects.get(name=song_name, profile=song_profile)
-        # comment = Comment.objects.get(text=text, profile=profile)
-        
-        # profile = self.get_object().profile
         
         context['song'] = song
         context['text'] = text
         context['song_profile'] = profile
 
+        # Grab authenticated user's profile, place in context
         if (self.request.user.is_authenticated):
             user_profile = self.get_object()
             context['user_profile'] = user_profile
-        # context['comment'] = comment
+        
         return context
     
     def post(self, request, *args, **kwargs):
-        # pk = self.kwargs['pk']
-        # song = Song.objects.get(pk=pk)
-        # self.object = song
+        '''Function to handle the view's behavior upon a POST request'''
+        # Grab necessary context variables
         song = self.get_context_data()['song']
         text = self.get_context_data()['text']
         profile = self.get_context_data()['song_profile']
 
-
+        # If user is logged in, remove the specified comment
         if (self.request.user.is_authenticated):
             self.remove_comment(text, profile, song)
         else:
             print("No authenticated user")
-        return HttpResponseRedirect(reverse('show_song', kwargs={'pk':self.get_context_data()['song'].pk}))
+
+        # Redirect to the detail page of the original comment's song
+        return HttpResponseRedirect(reverse('show_song', 
+            kwargs={'pk':self.get_context_data()['song'].pk}))
+    
     
     def remove_comment(self, text, profile, song):
-
+        '''Helper function to remove the comment'''
         comment = Comment.objects.get(text=text, profile=profile, song=song)
         comment.delete()
     
-        # redirect to current post's page (consequence of post method)    
-    
 class UpdateProfileView(RequireLogin, LoginRequiredMixin, UpdateView):
+    '''A view to handle the update of a Profile.'''
     model = Profile
     form_class = UpdateProfileForm
     template_name = "project/update_profile_form.html"
 
     def form_valid(self, form):
+        '''Overwrite form_valid method, attach user to form'''
         user = self.request.user
         form.instance.user = user
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
+        '''Provides context data needed for this view.'''
         context = super().get_context_data(**kwargs)
-        if (self.request.user):
+        if (self.request.user): # Grab authenticated user's profile
             profile = self.get_object()
-            context["profile"] = profile
+            context["user_profile"] = profile
 
         return context
 
 class UpdateSongView(RequireLogin, LoginRequiredMixin, UpdateView):
+    '''A view to handle the update of a Profile.'''
     model = Song
     form_class = UpdateSongForm
     template_name = "project/update_song_form.html"
 
     def get_object(self):
+        '''Overwrite get_object method to return song of URL's pk'''
         return Song.objects.get(pk=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
+        '''Provides context data needed for this view.'''
         context = super().get_context_data(**kwargs)
         if (self.request.user.is_authenticated):
             user_profile = Profile.objects.get(user=self.request.user)
@@ -419,16 +466,17 @@ class UpdateSongView(RequireLogin, LoginRequiredMixin, UpdateView):
         return context
     
     def get_success_url(self):
+        '''Return the corresponding url of the context object'''
         return self.get_object().get_absolute_url()
 
     def form_valid(self, form):
+        '''Overwrite form_valid method, attach user to form'''
         user = self.request.user
         form.instance.user = user
         return super().form_valid(form)
 
 class DeleteSongView(LoginRequiredMixin, DeleteView):
     '''A view to handle the deletion of a Song.'''
-
     model = Song
     form_class = DeleteSongForm
     template_name = 'project/delete_song_form.html'
@@ -436,19 +484,24 @@ class DeleteSongView(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         '''Provides context data needed for this view.'''
         context = super().get_context_data()
-
+        
+        # Grab song in context, place its uploader profile in context
         pk = self.kwargs['pk']
-        song = Song.objects.get(pk=pk)
+        song = Song.objects.get(pk=pk) 
         context['profile'] = song.profile
+
+        # If a user is logged in, place its profile into context
         if (self.request.user.is_authenticated):
             user_profile = Profile.objects.get(user=self.request.user)
             context['user_profile'] = user_profile
         return context
 
     def get_success_url(self):
+        '''Generates a URL to redirect to.'''
         return self.get_context_data()['profile'].get_absolute_url()
     
     def form_valid(self, form):
+        '''Overwrite the form_valid, attach the user to the form'''
         user = self.request.user
         form.instance.user = user
         return super().form_valid(form)

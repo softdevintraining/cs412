@@ -1,42 +1,91 @@
-<!-- project/show_profile.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/20/2025 -->
+<!-- project/templates/project/show_profile.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
 <!-- Description: HTML template to show the DetailView of one Profile -->
 {% extends 'project/base.html' %}
 
 {% block content %}
-<!-- creates a table to store the profiles in -->
+<!-- Displaying the profile information using flexbox -->
 <div>
-    <h3>{{profile.display_name}}'s Profile</h3>
-    <img src="{{profile.profile_image_url}}" alt="profile image"/>
-    {% if user_profile %}
-        <form method="POST" action="{% url 'show_profile' profile.pk %}">
-            {% csrf_token %}
-            {% if followed_by %}
-                <input type="submit" value="Unfollow">
-            {% else %}
-                <input type="submit" value="Follow">
+    <div style="background-color: #181c1f; display: flex; margin: 10px 12.5%; padding: 10px; justify-content: left; gap: 25px; border-radius: 8px;">
+        <img style="height: 225px; width: 225px; border-radius: 100%;" src="{{profile.profile_image_url}}" alt="profile image"/>
+        <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; gap: 15px; justify-content: space-around;">
+                <div style="font-size: 25px; padding-right: 35px;">
+                    <h4>{{profile.display_name}} (@{{profile.username}})</h4>
+                </div>
+                <!-- Display the number of tracks, folloers, and following 
+                 of a Profile -->
+                <div style="font-size: 25px;">
+                    <h4>Tracks</h4>
+                    <p>{{profile.get_num_songs}}</p>
+                </div>
+                <div style="font-size: 25px;">
+                    <h4>Followers</h4>
+                    <p>{{profile.get_num_followers}}</p>
+                </div>
+                <div style="font-size: 25px;">
+                    <h4>Following</h4>
+                    <p>{{profile.get_num_following}}</p>
+                </div>
+            </div>
+            <div><p>{{profile.bio_text}}</p></div>
+
+            <!-- If this is the profile of the authenticated user
+             allow them to upload songs and update their profile -->
+            {% if user_profile == profile %}
+                <div>
+                    <a href="{% url 'create_song' %}">Upload Song</a>
+                    <a href="{% url 'update_profile' %}">Update Profile</a>
+                </div>
             {% endif %}
-        </form>
-    {% endif %}
-    <h4>{{profile.username}}</h4>
+            
+            <!-- If a user is logged in... -->
+            {% if user_profile %}
 
-    <p>{{profile.bio_text}}</p>
-
-    <h4>Tracks</h4>
-    <main class="grid-container">
-        {% for song in profile.get_songs %}
-        <div>
-            <a href="{% url 'show_song' song.pk %}"><img src="{{song.profile.profile_image_url}}"/></a>
-            <p>{{song.name}}</p>
-            {% if song.audio_file %}
-                <audio controls>
-                    <source src="{{song.audio_file.url}}" type="audio/wav">
-                </audio>
-            {% else %}
-                <p>No audio.</p>
+            <!-- ...and this is not their profile, allow the user to follow 
+             and unfollow this profile -->
+            {% if profile != user_profile %}
+                <form method="POST" action="{% url 'show_profile' profile.pk %}">
+                    {% csrf_token %}
+                    {% if followed_by %}
+                        <input style="height: 25px; color: white; background-color: inherit; font-family: inherit ;" 
+                        type="submit" value="Unfollow">
+                    {% else %}
+                        <input style="height: 25px; color: white; background-color: inherit; font-family: inherit ;"
+                        type="submit" value="Follow">
+                    {% endif %}
+                </form>
+                {% endif %}
             {% endif %}
         </div>
+        
+    </div> 
+    
+    <!-- Using grid layout to display tracks -->
+    <h4 style="padding-left: 12.5%; font-size: 20px; margin: 0;">Tracks</h4>
+    <div class="grid-songs-container">
+        <!-- Use a for loop to display all of this profile's songs/tracks -->
+        {% for song in profile.get_songs %}
+        <div style="display: flex;">
+            <a href="{% url 'show_song' song.pk %}">
+                <img style="height: 175px; width: 175px;" src="{{song.profile.profile_image_url}}"/>
+            </a>
+            
+        </div>
+        <div style="padding-left: 10px; font-size: large;">
+                <p>{{song.name}}</p>
+                <h6 style="color: #717171">{{song.timestamp}}</h6>
+
+                <!-- If song has audio, display it, otherwise show alt text -->
+                {% if song.audio_file %}
+                    <audio style="width: 500px;" controls>
+                        <source src="{{song.audio_file.url}}" type="audio/wav">
+                    </audio>
+                {% else %}
+                    <p>No audio.</p>
+                {% endif %}
+            </div>
         {% endfor %}
-    </main>
+    </div>
 </div>
 {% endblock %}

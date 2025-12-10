@@ -1,25 +1,26 @@
 <!-- project/templates/project/login.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/22/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
 <!-- Description: HTML template that renders the login page -->
 {% extends 'project/base.html'%}
 
 {% block content %}
+<div class="add-left-space">
+    <h1>Login to Project NAME</h1>
 
-<h1>Login to Project NAME</h1>
-
-<!-- Login form -->
-<form method="POST" action="{% url 'login'%}">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Login">
-    
-    
-    {% if request.GET.next %}
-        <!-- Redirects user to a url specified by the request if there is one -->
-        <input type="hidden" name="next" value="{{request.GET.next}}"/>
-    {% else %}
-        <!-- If there is no url, redirect to show all profiles page -->
-        <input type="hidden" name="next" value="{% url 'all_songs' %}" />
-    {% endif %}
-</form>
+    <!-- Login form -->
+    <form method="POST" action="{% url 'login'%}">
+        {% csrf_token %}
+        {{form}}
+        <input class="dark-button" type="submit" value="Login">
+        
+        
+        {% if request.GET.next %}
+            <!-- Redirects user to a url specified by the request if there is one -->
+            <input type="hidden" name="next" value="{{request.GET.next}}"/>
+        {% else %}
+            <!-- If there is no url, redirect to the landing page -->
+            <input type="hidden" name="next" value="{% url 'landing_page' %}" />
+        {% endif %}
+    </form>
+</div>
 {% endblock %}

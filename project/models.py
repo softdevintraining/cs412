@@ -1,5 +1,5 @@
 # File: project/models.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/20/2025
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025
 # Description: File to define data models for my final project application
 
 from django.db import models
@@ -17,28 +17,47 @@ class Profile(models.Model):
     join_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        '''Returns a string representation of this Profile'''
         return f'''{self.display_name}'s Profile'''
     
     def get_absolute_url(self):
+        '''Returns a link for the DetailView of this Profile object'''
         return reverse('show_profile', kwargs={"pk": self.pk})
 
     def get_songs(self):
+        '''Returns a query set of this Profile's all Songs'''
         return Song.objects.filter(profile=self)
+    
     def get_followers(self):
+        '''Returns a list of this Profile's followers'''
         followers = []
 
+        # Grabs the follower profile foreign from each Follow object
         for follow in Follow.objects.filter(followed=self):
             followers.append(follow.followed_by)
 
         return followers
+    
     def get_following(self):
-        return Follow.objects.filter(followed_by=self)
+        '''Returns a queryset of Profile's Profile's following'''
+        following = []
+
+        # Grabs the following profile foreign from each Follow object
+        for follow in Follow.objects.filter(followed_by=self):
+            following.append(follow.followed)
+
+        return following
     
     def get_num_songs(self):
-        return len(self.get_num_songs)
+        '''Return the number of songs associated with this Profile.'''
+        return len(self.get_songs())
+    
     def get_num_followers(self):
+        '''Return the number of Profiles this one is following.'''
         return len(self.get_followers())
+    
     def get_num_following(self):
+        '''Return the number of followers of this Profile.'''
         return len(self.get_following())
     
     def get_song_feed(self):
@@ -53,12 +72,9 @@ class Profile(models.Model):
         print(f'users: {profiles}')
         print(f'profiles: {profiles}')
         return song_feed
-    
-    def get_profile_feed(self):
-        '''Returns the profiles that should appear in this Profile's feed.'''
-        pass
 
     def is_follower(self, profile):
+        '''Returns true if the argued profile is following this one'''
         if profile in self.get_followers():
             return True
     
@@ -75,12 +91,15 @@ class Song(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        '''Returns a string representation of this Song'''
         return f'''{self.name} by {self.profile.display_name}'''
     
     def get_absolute_url(self):
+        '''Returns a link for the DetailView of this Song object'''
         return reverse('show_song', kwargs={"pk": self.pk})
     
     def get_comments(self):
+        '''Returns the comments associated with this Song object'''
         return Comment.objects.filter(song=self)
     
     def get_likes(self):
@@ -113,6 +132,7 @@ class Follow(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        '''Returns a string representation of this Follow'''
         return f'''{self.followed_by.display_name} follows {self.followed.display_name}'''
 
 class Comment(models.Model):
@@ -123,4 +143,5 @@ class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        '''Returns a string representation of this Comment'''
         return f'''{self.profile.display_name} comments on {self.song.name}'''

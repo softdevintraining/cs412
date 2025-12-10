@@ -1,5 +1,5 @@
-<!-- project/base.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/20/2025 -->
+<!-- project/templates/project/base.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
 <!-- Description: template that renders the base elements of project app -->
 
 {% load static %}
@@ -10,35 +10,8 @@
         <link rel="stylesheet" href="{% static 'project-styles.css' %}">
     </head>
     <body>
+        <!-- Delegate header to respective template, add content underneath -->
         {% include "project/header.html" %}
-        <nav>
-            <li><a href="{% url 'landing_page'%}">Home</a></li>
-            <li><a href="{% url 'all_songs'%}">All Songs</a></li>
-            <li><a href="{% url 'create_profile'%}">Sign Up</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'show_profile' user_profile.pk %}">Profile</a></li>
-            {% endif %}
-        </nav>
-        {% if user.is_authenticated %}
-            <p>logged in as {{user}}</p>
-        {% endif %}
-
-        {% if user.is_authenticated %}
-            <!-- If a user is logged in, show logout button -->
-            <form method="POST" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit">Logout</button>
-            </form>
-        {% else %}
-            <!-- If no user is logged in, show login button -->
-            <form method="GET" action="{% url 'login' %}">
-                {% csrf_token %}
-                <button type="submit">Login</button>
-            </form>
-        {% endif %}
-
-        <p>Hey!</p>
-
         {% block content %}
         {% endblock %}
     </body>

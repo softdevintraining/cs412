@@ -1,27 +1,43 @@
-<div style="margin: 0; width: 100%; background-color: white;">
-    <div style="display: flex; gap: 10px; ">
-        <a href="{% url 'landing_page' %}"><p style="color: black;">Landing Page</p></a>
-        <a href="{% url 'all_songs' %}"><p style="color: black;">All Songs</p></a>
-        <span style="margin-left: auto; display: flex; gap: 10px">
-            <form style="display: flex; margin:auto" method="GET" action="{% url 'search' %}" >
-                {% csrf_token %}
-                <input type="text" name="query" placeholder="Search for something..."/>
-                <input type="submit" name="submit" value="Search" />
-            </form>
+<!-- project/templates/project/header.html -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
+<!-- Description: template that constructs the header of my project -->
+
+<div style="background-color: #121212; margin: 0; width: 100%; color: #3f3f3f; border-bottom: solid 2px">
+    <div style="display: flex; gap: 10px; padding: 0px 5px; ">
+        <a href="{% url 'landing_page' %}"><p style="color: #717171;">Landing Page</p></a>
+        <a href="{% url 'all_songs' %}"><p style="color: #717171">All Songs</p></a>
+        
+        <!-- If a user is logged in, show their display name in the header -->
         {% if user.is_authenticated %}
-            <a href="{% url 'show_profile' user_profile.pk %}"><p style="color: black;">Your Profile</p></a>
-            <a href="{% url 'show_feed' %}"><p style="color: black;">Feed</p></a>
+            <p>Logged in as: @{{user_profile.display_name}}</p>
         {% endif %}
-        {% if user.is_authenticated %}
-            <form style="margin: 0; display: flex; align-items: center;"action="{% url 'logout' %}" method="POST">
+        <span style="margin-left: auto; display: flex; gap: 10px">
+            <form style="display: flex; margin:auto; gap: 4px" method="GET" action="{% url 'search' %}" >
                 {% csrf_token %}
-                <input type="submit" value="Logout">
+                <input style="height: 25px; color: #717171; background-color: inherit; font-family: inherit ;" 
+                type="text" name="query" placeholder="Search for something..."/>
+                <input style="height: 25px; color: #717171; background-color: inherit; font-family: inherit ;"
+                type="submit" name="submit" value="Search" />
+            </form>
+
+        <!-- If a user is logged in, show nav links for their profile and feed -->
+        {% if user.is_authenticated %}
+            <a href="{% url 'show_profile' user_profile.pk %}"><p style="color: #717171;">Your Profile</p></a>
+            <a href="{% url 'show_feed' %}"><p style="color: #717171;">Feed</p></a>
+        {% endif %}
+
+        <!-- If a user is logged in, show a button to logout
+         or show buttons to login or sign up. -->
+        {% if user.is_authenticated %}
+            <form style="margin: 0; display: flex; align-items: center;" action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <input style="height: 25px; color: #717171; background-color: inherit; font-family: inherit ;"
+                type="submit" value="Logout">
             </form>
         {% else %}
-            <a href="{% url 'login' %}"><p style="color: black;">Login</p></a>
-            <a href="{% url 'create_profile' %}"><p style="color: black;">Sign Up</p></a>
+            <a href="{% url 'login' %}"><p style="color: #717171;">Login</p></a>
+            <a href="{% url 'create_profile' %}"><p style="color: #717171;">Sign Up</p></a>
         {% endif %}
         </span>
-        
     </div>
 </div>

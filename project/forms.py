@@ -1,6 +1,6 @@
-# File: mini_insta/views.py
-# Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025
-# Description: File which houses forms associated with the mini_insta app
+# File: project/forms.py
+# Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025
+# Description: File which houses forms associated with my final projectapp
 
 from django import forms
 from .models import Song, Profile, Comment

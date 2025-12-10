@@ -3,6 +3,7 @@
 # Description: File which pattern matches HTML responses to valid requests to 
 # project/
 
+# imports
 from django.urls import path
 from . import views
 
@@ -26,5 +27,5 @@ urlpatterns = [
     path('song/<int:pk>/delete_like', views.SongDetailView.as_view(), name='delete_like'),
     path('search', views.SearchView.as_view(), name='search'),
     path('login/', auth_views.LoginView.as_view(template_name="project/login.html"), name="login"),
-    path('logout/', auth_views.LogoutView.as_view(next_page='all_songs'), name="logout"),
+    path('logout/', auth_views.LogoutView.as_view(next_page='landing_page'), name="logout"),
 ]

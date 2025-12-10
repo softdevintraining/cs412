@@ -1,22 +1,25 @@
 <!-- project/templates/project/delete_song_form.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/24/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
 <!-- Description: HTML template that renders the delete song form -->
 {% extends 'project/base.html' %}
 {% load static %}
 
 {% block content %}
-<h1>Delete Song</h1>
+<div class="add-left-space">
+    <h1>Delete Song: "{{song.name}}" (@{{song.profile.display_name}})</h1>
 
-<!-- Delete a song form -->
-<form method="POST" action="{% url 'delete_song' song.pk %}">
-    {% csrf_token %}
-    {{song.name}} <br>
-    <input type="submit" name="submit" value="Delete" />
-</form>
+    <!-- Delete a song form -->
+    <div style="display: flex; gap: 10px;">
+    <form method="POST" action="{% url 'delete_song' song.pk %}">
+        {% csrf_token %}
+        <input class="dark-button" type="submit" name="submit" value="Delete" />
+    </form>
 
-<!-- Show button to cancel song creation -->
-<form method="GET" action="{% url 'show_song' song.pk %}">
-    <input type="submit" name="submit" value="Cancel" />
-</form>
+    <!-- Cancel button returns you to song page -->
+    <form method="GET" action="{% url 'show_song' song.pk %}">
+        <input class="dark-button" type="submit" name="submit" value="Cancel" />
+    </form>
+    </div>
+</div>
 
 {% endblock %}

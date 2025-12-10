@@ -1,25 +1,29 @@
 <!-- project/templates/project/create_song_form.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 10/24/2025 -->
-<!-- Description: HTML template that renders the create post page that shows
- after clicking the create a post button on some profile. -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
+<!-- Description: HTML template that renders the create song page that shows
+ after clicking the upload song button on some profile. -->
 {% extends 'project/base.html' %}
 {% load static %}
 
 {% block content %}
+<div class="add-left-space">
 <h1>Upload a new Song</h1>
 
 <!-- Create a post form -->
 <form method="POST" action="{% url 'create_song' %}"
     enctype="multipart/form-data">
     {% csrf_token %}
-    {{form.as_table}}
+    {{form.as_p}}
 
     <!-- form field for a music file like mp3/wav -->
     <input type="file" name="file" /> <br>
     <br>
-    <input type="submit" name="submit" value="Upload" />
+    <input class="dark-button" type="submit" name="submit" value="Upload" />
 </form>
-
-<!-- Add in a cancel button that links back to the profile page-->
+<!-- Cancel button returns you to profile page of logged in user -->
+<form method="GET" action="{% url 'show_profile' user_profile.pk %}">
+    <input class="dark-button" type="submit" value="Cancel">
+</form>
+</div>
 
 {% endblock %}

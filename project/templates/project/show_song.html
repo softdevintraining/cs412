@@ -1,60 +1,101 @@
 <!-- project/show_song.html -->
-<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 11/20/2025 -->
+<!-- Author: Oluwatimilehin Akibu (akilu@bu.edu), 12/9/2025 -->
 <!-- Description: HTML template to show the DetailView of one Song -->
 {% extends 'project/base.html' %}
 
 {% block content %}
-<!-- creates a table to store the profiles in -->
-<main class="grid-container">
-    <!-- for loop to load each profile stored in the mini_insta database -->
-    <div>
-        <p>{{song.name}} by <a href="{% url 'show_profile' song.profile.pk %}">@{{song.profile.username}}</a></p>
-        {% if song.audio_file %}
-            <audio controls>
-                <source src="{{song.audio_file.url}}" type="audio/wav">
-            </audio>
-        {% else %}
-            <p>No audio.</p>
-        {% endif %}
-    </div>
-    <br>
-    
-</main>
-{% if user.is_authenticated %}
-    {% if liked_by%}
-        <form method="POST" action="{% url 'delete_like' song.pk %}">
-            {% csrf_token %}
-            <button type="submit">Unlike</button>
-        </form>
+
+<div style="display: flex; justify-content: center; padding-top: 10px;">
+    <div style="background-color: #181c1f; margin: 10px; padding: 10px; border-radius: 8px;">
+    <!-- If song has a specified image, display it, otherwise use the 
+     profile image of the song's uploader -->
+    {% if song.image_url %}
+        <img style="width: 200px; height: 200px;" src="{{song.image_url}}"/>
     {% else %}
-        <form method="POST" action="{% url 'create_like' song.pk %}">
-            {% csrf_token %}
-            <button type="submit">Like</button>
-        </form>
+        <img style="width: 400; height: 400;" src="{{song.profile.profile_image_url}}"/>
     {% endif %}
-{%endif%}
-<h4>Comments:</h4>
-{% for comment in song.get_comments %}
-    <p>@{{comment.profile.username}}: {{comment.text}}</p>
-    {% if user.is_authenticated %}
-        {% if comment.profile == user_profile %}
-            <form method="POST" action="{% url 'delete_comment' comment.pk %}">
-                {% csrf_token %}
-                <input hidden name="form_text" value="{{comment.text}}">
-                <input hidden name="song_profile_user" value="{{comment.song.profile.username}}">
-                <input hidden name="song_name" value="{{comment.song.name}}">
-                <input type="submit" value="Delete">
-            </form>
+    <div style="display:flex; align-items: center; justify-content: space-between;">
+        <p>{{song.name}} by <a href="{% url 'show_profile' song.profile.pk %}">@{{song.profile.username}}</a></p>
+        <!-- If a user is logged in, and is looking at their own song 
+         allow the user to update or delete it -->
+        {% if user.is_authenticated %}
+            {% if user_profile == profile %}
+                <form style="margin:0;" method="GET" action="{% url 'update_song' song.pk %}">
+                    <button class="dark-button"
+                    type="submit">Update</button>
+                </form>
+                <form style="margin:0;" method="GET" action="{% url 'delete_song' song.pk %}">
+                    <button class="dark-button"
+                    type="submit">Delete</button>
+                </form>
+            {% else %}
+                <!-- If the user is logged in, but looking at another 
+                 profile's song, allow themt to like and unlike it -->
+                {% if liked_by%}
+                    <form style="margin:0;" method="POST" action="{% url 'delete_like' song.pk %}">
+                        {% csrf_token %}
+                        <button style="height: 25px; color: #717171; background-color: inherit; font-family: inherit;"
+                        type="submit">Unlike</button>
+                    </form>
+                {% else %}
+                    <form style="margin:0;" method="POST" action="{% url 'create_like' song.pk %}">
+                        {% csrf_token %}
+                        <button style="height: 25px; color: #717171; background-color: inherit; font-family: inherit;"
+                        type="submit">Like</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        {%endif%}
+    </div>
+    
+    <!-- If the song has audio, display it, otherwise show alt text -->
+    {% if song.audio_file %}
+        <audio style="width: 400px;" controls>
+            <source src="{{song.audio_file.url}}" type="audio/wav">
+        </audio>
+    {% else %}
+        <p>No audio.</p>
+    {% endif %}
+    </div>
+</div>
+<br>
+    
+<div style="display: flex; justify-content: center;">
+    <div>
+    <h4 style="font-size: 25px; margin:0">Comments:</h4>
+    
+    <!-- for loop to display all of this Song's comments using the grid -->
+    {% for comment in song.get_comments %}
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+        <p>
+            <a href="{% url 'show_profile' comment.profile.pk %}">@{{comment.profile.display_name}}</a>: {{comment.text}}
+        </p>
+        
+        <!-- If a user is logged in, allow it to delete any of its comments
+         on this Song -->
+        {% if user.is_authenticated %}
+            {% if comment.profile == user_profile %}
+                <form style="margin: 0;" method="POST" action="{% url 'delete_comment' comment.pk %}">
+                    {% csrf_token %}
+                    <input hidden name="form_text" value="{{comment.text}}">
+                    <input hidden name="song_profile_user" value="{{comment.song.profile.username}}">
+                    <input hidden name="song_name" value="{{comment.song.name}}">
+                    <input style="height: 25px; color: #717171; background-color: inherit; font-family: inherit;"
+                    type="submit" value="Delete">
+                </form>
+            {% endif %}
         {% endif %}
-    {% endif %}
-{% endfor %}
+        </div>
+    {% endfor %}
 
-<form method="POST" action="{% url 'comment' song.pk%}">
-    {% csrf_token %}
-    <h5>Add a comment: </h5>
-    {{form.as_p}}
-    <input type="submit">
-</form>
-
-
+    <!-- Comment submission form -->
+    <form style=" border-top: solid 2px #717171;" method="POST" action="{% url 'comment' song.pk%}">
+        {% csrf_token %}
+        <h5>Add a comment: </h5>
+        {{form.as_p}}
+        <input style="height: 25px; color: #717171; background-color: inherit; font-family: inherit;"
+        type="submit" value="Comment!">
+    </form>
+    </div>
+</div>
 {% endblock %}
